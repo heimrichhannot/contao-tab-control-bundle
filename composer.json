@@ -1,0 +1,38 @@
+{
+    "name": "heimrichhannot/contao-tab-control-bundle",
+    "description": "Adds tabs content elements to contao.",
+    "keywords": [
+        "contao",
+        "tabs",
+        "bootstrap",
+        "twig"
+    ],
+    "type": "contao-bundle",
+    "homepage": "https://github.com/heimrichhannot/contao-tab-control-bundle",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Heimrich & Hannot",
+            "email": "digitales@heimrich-hannot.de",
+            "homepage": "http://www.heimrich-hannot.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/heimrichhannot/contao-tab-control-bundle/issues"
+    },
+    "require": {
+        "php": "^7.1",
+        "contao/core-bundle": "^4.4",
+        "heimrichhannot/contao-encore-bundle": "^0.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "HeimrichHannot\\TabControlBundle\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "HeimrichHannot\\TabControlBundle\\ContaoManager\\Plugin",
+        "foxy": true
+    }
+}

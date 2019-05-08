@@ -1,0 +1,7 @@
+services:
+
+  huh.tab_control.helper.structure_tabs:
+    class: HeimrichHannot\TabControlBundle\Helper\StructureTabHelper
+    autowire: true
+    public: true
+  HeimrichHannot\TabControlBundle\Helper\StructureTabHelper: '@huh.tab_control.helper.structure_tabs'

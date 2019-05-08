@@ -1,0 +1,10 @@
+{
+  "name": "contao-tab-control-bundle",
+  "version": "1.0.0",
+  "main": "src/Resources/assets/contao-tab-control-bundle.js",
+  "author": "Thomas Körner <t.koerner@heimrich-hannot.de>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.0.0"
+  }
+}

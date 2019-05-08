@@ -1,0 +1,15 @@
+<?php $this->block('headline'); ?>
+    <?php if ($this->headline): ?>
+        <<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
+    <?php endif; ?>
+<?php $this->endblock(); ?>
+
+<ul class="ce_tabcontrol nav nav-tabs" id="tabcontrol_tabs_<?= $this->id ?>" role="tablist" <?php if ($this->rememberLastTab): ?>data-remember-last-tab="true"<?php endif; ?>>
+    <?php foreach ($this->tabs as $tab): ?>
+      <li class="nav-item">
+        <a class="nav-link <?php if ($tab['active']): ?>active<?php endif; ?>" id="<?= $tab['tabId'] ?>-tab" href="#<?= $tab['tabId'] ?>" role="tab" aria-controls="<?= $tab['tabId'] ?>" aria-selected="<?php if ($tab['active']): ?>true<?php endif; ?>"><?= $tab['headline'] ?></a>
+      </li>
+    <?php endforeach; ?>
+</ul>
+<div class="tab-content" id="tabcontrol_content_<?= $this->id ?>">
+    <div class="tab-pane fade <?php if ($this->active): ?>show active<?php endif; ?>" id="<?= $this->tabId ?>" role="tabpanel" aria-labelledby="<?= $this->tabId ?>-tab">
