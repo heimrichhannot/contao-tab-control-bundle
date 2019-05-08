@@ -17,14 +17,13 @@ class ContaoTabControlBundle
                 let savedTabPosition = sessionStorage.getItem(tabControl.id);
                 if (null !== savedTabPosition)
                 {
-                    let activeTab = tabControl.querySelector(savedTabPosition);
+                    let activeTab = tabControl.querySelector('#' + savedTabPosition);
                     if (null !== activeTab)
                     {
                         $(activeTab).tab('show');
                     }
                 }
             }
-
 
             tabControl.querySelectorAll('a.nav-link').forEach((element, key, parent) => {
 
@@ -42,11 +41,6 @@ class ContaoTabControlBundle
 
 
     }
-
-    // collectTabGroups()
-    // {
-    //     document.querySelectorAll('.ce_tabcontrol')
-    // }
 }
 
 let tabControl = new ContaoTabControlBundle();
