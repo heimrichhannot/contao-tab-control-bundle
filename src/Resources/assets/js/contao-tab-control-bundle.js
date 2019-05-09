@@ -1,6 +1,5 @@
 let $ = require('jquery');
 import 'bootstrap/js/dist/tab';
-import 'bootstrap/js/dist/util';
 
 class ContaoTabControlBundle
 {
@@ -37,11 +36,8 @@ class ContaoTabControlBundle
                 });
             });
         });
-
-
-
     }
 }
 
 let tabControl = new ContaoTabControlBundle();
-tabControl.init();
+document.addEventListener('DOMContentLoaded', tabControl.init);
