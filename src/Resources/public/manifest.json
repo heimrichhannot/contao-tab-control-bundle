@@ -1,0 +1,6 @@
+{
+  "bundles/contaotabcontrol/bootstrap-tabs.js": "/bundles/contaotabcontrol/bootstrap-tabs.js",
+  "bundles/contaotabcontrol/contao-tab-control-bundle.js": "/bundles/contaotabcontrol/contao-tab-control-bundle.js",
+  "bundles/contaotabcontrol/tabcontrol-backend.css": "/bundles/contaotabcontrol/tabcontrol-backend.css",
+  "bundles/contaotabcontrol/tabcontrol-backend.js": "/bundles/contaotabcontrol/tabcontrol-backend.js"
+}

@@ -47,5 +47,6 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface
     {
         $loader->load('@ContaoTabControlBundle/Resources/config/services.yml');
         $loader->load('@ContaoTabControlBundle/Resources/config/config.yml');
+        $loader->load('@ContaoTabControlBundle/Resources/config/datacontainers.yml');
     }
 }

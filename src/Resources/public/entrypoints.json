@@ -1,0 +1,22 @@
+{
+  "entrypoints": {
+    "contao-tab-control-bundle": {
+      "js": [
+        "/bundles/contaotabcontrol/contao-tab-control-bundle.js"
+      ]
+    },
+    "tabcontrol-backend": {
+      "css": [
+        "/bundles/contaotabcontrol/tabcontrol-backend.css"
+      ],
+      "js": [
+        "/bundles/contaotabcontrol/tabcontrol-backend.js"
+      ]
+    },
+    "bootstrap-tabs": {
+      "js": [
+        "/bundles/contaotabcontrol/bootstrap-tabs.js"
+      ]
+    }
+  }
+}

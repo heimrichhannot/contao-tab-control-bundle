@@ -10,6 +10,9 @@
 
 $dca = &$GLOBALS['TL_DCA']['tl_content'];
 
+$GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = ['huh.tab_control.data_container.content','createTabControlElement'];
+$GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = ['huh.tab_control.data_container.content','deleteTabControlElement'];
+
 $dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement::TYPE] = '{type_legend},type,headline;{tab_legend},tabControlHeadline;{tab_section_legend},tabControlRememberLastTab;';
 $dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlSeperatorElement::TYPE] = '{type_legend},type;{tab_legend},tabControlHeadline;';
 $dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement::TYPE] = '{type_legend},type;';

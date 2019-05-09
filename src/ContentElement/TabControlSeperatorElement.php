@@ -15,6 +15,7 @@ namespace HeimrichHannot\TabControlBundle\ContentElement;
 use Contao\BackendTemplate;
 use Contao\ContentElement;
 use Contao\StringUtil;
+use Contao\System;
 
 class TabControlSeperatorElement extends ContentElement
 {
@@ -28,11 +29,13 @@ class TabControlSeperatorElement extends ContentElement
     protected function compile()
     {
         if (TL_MODE == 'BE') {
-            $this->Template           = new BackendTemplate('be_wildcard');
-            $this->Template->wildcard = '### TABCONTROL: SEPERATOR ###<br>'.$this->tabControlHeadline;
-            return;
+            $this->Template = new BackendTemplate('be_tabs_control');
         }
 
+        $tabs = System::getContainer()->get('huh.tab_control.helper.structure_tabs')->getTabDataForContentElement($this->id, $this->pid, $this->ptable);
+
+        $this->Template->id = $this->id;
+        $this->Template->tabs = $tabs;
         $this->Template->tabControlHeadline = $this->tabControlHeadline;
         $this->Template->tabId = StringUtil::generateAlias($this->tabControlHeadline).'_'.$this->id;
         $this->Template->active = false;

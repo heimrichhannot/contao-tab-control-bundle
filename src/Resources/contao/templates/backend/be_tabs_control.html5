@@ -1,0 +1,23 @@
+<?php if ($this->title): ?>
+    <h1><?= $this->title ?></h1>
+<?php endif; ?>
+
+<style>
+
+</style>
+
+<div class="tl_gray">
+    <div class="ce_tabs_control_be tab_example <?= $this->isStopElement ? 'tab-stop-element' : ''?> ">
+        <?php foreach ($this->tabs as $tab):
+            $activeClass = '';
+            $title = '';
+            if ($tab['id'] === $this->id)
+            {
+                $activeClass .= ' current';
+                $title = $this->tabControlHeadline;
+            }
+        ?>
+            <div class="example-tab<?= $activeClass ?>"><?= $title ?></div>
+        <?php endforeach; ?>
+    </div>
+</div>

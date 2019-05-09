@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    public: true
+    autowire: true
+
+  huh.tab_control.data_container.content:
+    class: HeimrichHannot\TabControlBundle\DataContainer\ContentContainer

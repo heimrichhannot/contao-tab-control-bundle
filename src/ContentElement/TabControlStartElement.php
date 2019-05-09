@@ -32,28 +32,13 @@ class TabControlStartElement extends ContentElement
 
         $this->Template->headline = $this->headline;
         if (TL_MODE == 'BE') {
-            $this->Template           = new BackendTemplate('be_wildcard');
-            $this->Template->wildcard = '### TABCONTROL: START ###<br>'.$this->tabControlHeadline;
-            return;
+            $this->Template           = new BackendTemplate('be_tabs_control');
+//            $this->Template->wildcard = '### TABCONTROL: START ###<br>'.$this->tabControlHeadline;
         }
 
-        $tabData = ['id' => $this->id, 'pid' => $this->pid, 'ptable' => $this->ptable];
-        $container->get('huh.tab_control.helper.structure_tabs')->structureTabs($tabData, '', ['ptable' => $this->ptable]);
+        $tabs = System::getContainer()->get('huh.tab_control.helper.structure_tabs')->getTabDataForContentElement($this->id, $this->pid, $this->ptable);
 
-        $tabs = [];
-        if (isset($tabData['elements']))
-        {
-            foreach ($tabData['elements'] as $element)
-            {
-                if (in_array($element['type'], [TabControlStartElement::TYPE, TabControlSeperatorElement::TYPE])) {
-                    $tab = [];
-                    $tab['headline'] = $element['tabControlHeadline'];
-                    $tab['tabId'] = StringUtil::generateAlias($element['tabControlHeadline']).'_'.$element['id'];
-                    $tab['active'] = $element['id'] === $this->id;
-                    $tabs[] = $tab;
-                }
-            }
-        }
+        $this->Template->id = $this->id;
         $this->Template->tabs = $tabs;
         $this->Template->tabControlHeadline = $this->tabControlHeadline;
         $this->Template->tabId = StringUtil::generateAlias($this->tabControlHeadline).'_'.$this->id;

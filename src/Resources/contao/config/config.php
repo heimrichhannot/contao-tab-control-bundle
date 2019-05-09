@@ -15,8 +15,15 @@ $GLOBALS['TL_CTE']['tabs'][TabControlStopElement::TYPE]      = TabControlStopEle
 /**
  * Assets
  */
-$GLOBALS['TL_JAVASCRIPT']['huh_contao-tab-control-bundle_bootstrap-tabs'] = 'bundles/contaotabcontrol/js/bootstrap-tabs.js';
-$GLOBALS['TL_JAVASCRIPT']['huh_contao-tab-control-bundle'] = 'bundles/contaotabcontrol/js/contao-tab-control-bundle.js';
+if (TL_MODE === 'FE')
+{
+    $GLOBALS['TL_JAVASCRIPT']['huh_contao-tab-control-bundle_bootstrap-tabs'] = 'bundles/contaotabcontrol/bootstrap-tabs.js';
+    $GLOBALS['TL_JAVASCRIPT']['huh_contao-tab-control-bundle'] = 'bundles/contaotabcontrol/contao-tab-control-bundle.js';
+}
+else {
+    $GLOBALS['TL_CSS']['huh_contao-tab-control-bundle_backend'] = 'bundles/contaotabcontrol/tabcontrol-backend.css';
+}
+
 
 $GLOBALS['TL_WRAPPERS']['start'][] = TabControlStartElement::TYPE;
 $GLOBALS['TL_WRAPPERS']['separator'][] = TabControlSeperatorElement::TYPE;

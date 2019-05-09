@@ -12,6 +12,7 @@
 namespace HeimrichHannot\TabControlBundle\Helper;
 
 
+use Contao\StringUtil;
 use function count;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeperatorElement;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement;
@@ -32,6 +33,29 @@ class StructureTabHelper
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+    }
+
+    public function getTabDataForContentElement(int $id, int $pid, string $ptable)
+    {
+        $tabData = ['id' => $id, 'pid' => $pid, 'ptable' => $ptable];
+        $this->structureTabs($tabData, '', ['ptable' => $ptable]);
+
+        $tabs = [];
+        if (isset($tabData['elements']))
+        {
+            foreach ($tabData['elements'] as $element)
+            {
+                if (in_array($element['type'], [TabControlStartElement::TYPE, TabControlSeperatorElement::TYPE])) {
+                    $tab = [];
+                    $tab['headline'] = $element['tabControlHeadline'];
+                    $tab['tabId'] = StringUtil::generateAlias($element['tabControlHeadline']).'_'.$element['id'];
+                    $tab['active'] = $element['id'] === $id;
+                    $tab['id'] = $element['id'];
+                    $tabs[] = $tab;
+                }
+            }
+        }
+        return $tabs;
     }
 
 
@@ -69,7 +93,6 @@ class StructureTabHelper
                         'order' => 'sorting ASC',
                     ]
                 ))) {
-                $lastOneIsAccordionStop              = false;
                 $this->tabsStartStopCache[$cacheKey] = [];
 
                 foreach ($elements as $i => $element) {
@@ -79,23 +102,14 @@ class StructureTabHelper
                             $this->tabsStartStopCache[$cacheKey][] = [];
                         }
                         $this->tabsStartStopCache[$cacheKey][count($this->tabsStartStopCache[$cacheKey]) - 1][] = $element->row();
-                        $lastOneIsAccordionStop                                                                 = false;
                     }
                     elseif (TabControlSeperatorElement::TYPE === $element->type) {
                         $this->tabsStartStopCache[$cacheKey][count($this->tabsStartStopCache[$cacheKey]) - 1][] = $element->row();
-                        $lastOneIsAccordionStop                                                                 = false;
-                        continue;
                     }
                     elseif (TabControlStopElement::TYPE === $element->type)
                     {
                         $this->tabsStartStopCache[$cacheKey][count($this->tabsStartStopCache[$cacheKey]) - 1][] = $element->row();
-                        $lastOneIsAccordionStop                                                                 = true;
-                        continue;
-                    }
-                    elseif ($lastOneIsAccordionStop)
-                    {
                         $this->tabsStartStopCache[$cacheKey][] = [];
-                        $lastOneIsAccordionStop                = false;
                     }
                 }
 

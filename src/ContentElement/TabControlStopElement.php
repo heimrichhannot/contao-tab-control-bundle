@@ -14,6 +14,7 @@ namespace HeimrichHannot\TabControlBundle\ContentElement;
 
 use Contao\BackendTemplate;
 use Contao\ContentElement;
+use Contao\System;
 
 class TabControlStopElement extends ContentElement
 {
@@ -27,9 +28,13 @@ class TabControlStopElement extends ContentElement
     protected function compile()
     {
         if (TL_MODE == 'BE') {
-            $this->Template           = new BackendTemplate('be_wildcard');
-            $this->Template->wildcard = '### TABCONTROL: STOP ###';
-            return;
+            $this->Template           = new BackendTemplate('be_tabs_control');
         }
+
+        $tabs = System::getContainer()->get('huh.tab_control.helper.structure_tabs')->getTabDataForContentElement($this->id, $this->pid, $this->ptable);
+
+        $this->Template->id = $this->id;
+        $this->Template->tabs = $tabs;
+        $this->Template->isStopElement = true;
     }
 }
