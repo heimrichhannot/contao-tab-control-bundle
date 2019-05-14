@@ -3,6 +3,6 @@ huh_encore:
     entries:
       - { name: "contao-tab-control-bundle", requiresCss: false, head: false, file: "vendor/heimrichhannot/contao-tab-control-bundle/src/Resources/assets/js/contao-tab-control-bundle.js" }
     legacy:
-      css:
-        - 'huh.contao-tab-control-bundle'
+      js:
         - 'huh_contao-tab-control-bundle_bootstrap-tabs'
+        - 'huh_contao-tab-control-bundle'

@@ -22,6 +22,9 @@ class ContaoTabControlBundle
                         $(activeTab).tab('show');
                     }
                 }
+                else {
+                    $(tabControl.querySelector('a.nav-link')).tab('show');
+                }
             }
 
             tabControl.querySelectorAll('a.nav-link').forEach((element, key, parent) => {
