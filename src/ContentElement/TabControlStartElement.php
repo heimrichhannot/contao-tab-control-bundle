@@ -14,6 +14,7 @@ namespace HeimrichHannot\TabControlBundle\ContentElement;
 
 use Contao\BackendTemplate;
 use Contao\ContentElement;
+use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
 

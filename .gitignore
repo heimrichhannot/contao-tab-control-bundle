@@ -1,2 +1,9 @@
+/.idea
+.idea
+/.idea/*
+.idea/*
+./idea
+./idea/*
+
 yarn.lock
 yarn-error.log

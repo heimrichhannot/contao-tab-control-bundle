@@ -27,7 +27,7 @@ class ContaoTabControlBundle
                 }
             }
 
-            tabControl.querySelectorAll('a.nav-link').forEach((element, key, parent) => {
+            tabControl.querySelectorAll('a.tab-link').forEach((element, key, parent) => {
 
                 element.addEventListener('click', (e) => {
                     e.preventDefault();

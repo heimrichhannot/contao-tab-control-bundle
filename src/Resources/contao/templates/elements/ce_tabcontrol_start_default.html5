@@ -7,7 +7,11 @@
 <ul class="ce_tabcontrol nav nav-tabs" id="tabcontrol_tabs_<?= $this->id ?>" role="tablist" <?php if ($this->rememberLastTab): ?>data-remember-last-tab="true"<?php endif; ?>>
     <?php foreach ($this->tabs as $tab): ?>
       <li class="nav-item">
-        <a class="nav-link <?php if ($tab['active']): ?>active<?php endif; ?>" id="<?= $tab['tabId'] ?>-tab" href="#<?= $tab['tabId'] ?>" role="tab" aria-controls="<?= $tab['tabId'] ?>" aria-selected="<?php if ($tab['active']): ?>true<?php endif; ?>"><?= $tab['headline'] ?></a>
+          <?php if($tab['addTabLink']): ?>
+            <a class="nav-link" id="<?= $tab['tabId'] ?>-tab" href="<?= $tab['tabLink'] ?>"<?php if($tab['openLinkInNewTab']): ?> target="_blank"<?php endif; ?>><?= $tab['headline'] ?></a>
+          <?php else: ?>
+            <a class="tab-link nav-link <?php if ($tab['active']): ?>active<?php endif; ?>" id="<?= $tab['tabId'] ?>-tab" href="#<?= $tab['tabId'] ?>" role="tab" aria-controls="<?= $tab['tabId'] ?>" aria-selected="<?php if ($tab['active']): ?>true<?php endif; ?>"><?= $tab['headline'] ?></a>
+          <?php endif; ?>
       </li>
     <?php endforeach; ?>
 </ul>
