@@ -19,9 +19,9 @@ use Contao\System;
 
 class TabControlSeperatorElement extends ContentElement
 {
-    const TYPE = 'tabcontrolSeperator';
+    const TYPE = 'tabcontrolSeparator';
 
-    protected $strTemplate = 'ce_tabcontrol_seperator_default';
+    protected $strTemplate = 'ce_tabcontrol_separator_default';
 
     /**
      * Compile the content element
