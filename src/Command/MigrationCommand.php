@@ -16,7 +16,7 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Command\AbstractLockedCommand;
 use Contao\Model;
 use Contao\Model\Collection;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeperatorElement;
+use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeparatorElement;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement;
 use Symfony\Component\Console\Input\InputInterface;
@@ -185,7 +185,7 @@ class MigrationCommand extends AbstractLockedCommand
 
             if ('accessible_tabs_separator' === $model->type)
             {
-                $model->type = TabControlSeperatorElement::TYPE;
+                $model->type = TabControlSeparatorElement::TYPE;
                 $model->tabControlHeadline = $model->accessible_tabs_title;
                 $this->addMigrationSql("UPDATE tl_content SET type='".$model->type."', tabControlHeadline='".$model->tabControlHeadline."' WHERE id=".$model->id.";");
             }
@@ -227,7 +227,7 @@ class MigrationCommand extends AbstractLockedCommand
         /** @var ContentModel $contentElement */
         foreach ($contentElements as $contentElement)
         {
-            $contentElement->type = TabControlSeperatorElement::TYPE;
+            $contentElement->type = TabControlSeparatorElement::TYPE;
             $this->saveModel($contentElement);
             $io->progressAdvance();
         }

@@ -27,8 +27,9 @@ class TabControlStopElement extends ContentElement
      */
     protected function compile()
     {
-        if (TL_MODE == 'BE') {
-            $this->Template           = new BackendTemplate('be_tabs_control');
+        if (System::getContainer()->get('huh.utils.container')->isBackend())
+        {
+            $this->Template = new BackendTemplate('be_tabs_control');
         }
 
         $tabs = System::getContainer()->get('huh.tab_control.helper.structure_tabs')->getTabDataForContentElement($this->id, $this->pid, $this->ptable);

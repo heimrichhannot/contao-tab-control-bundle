@@ -15,9 +15,9 @@ $GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = ['huh.tab_co
 
 $dca['palettes']['__selector__'][] = 'tabControlAddLink';
 
-$dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement::TYPE] = '{type_legend},type,headline;{tab_legend},tabControlHeadline;{tab_section_legend},tabControlRememberLastTab,tabControlAddLink;';
-$dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlSeperatorElement::TYPE] = '{type_legend},type;{tab_legend},tabControlHeadline;{tab_section_legend},tabControlAddLink;';
-$dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement::TYPE] = '{type_legend},type;';
+$dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement::TYPE]     = '{type_legend},type,headline;{tab_legend},tabControlHeadline;{tab_section_legend},tabControlRememberLastTab,tabControlAddLink;';
+$dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlSeparatorElement::TYPE] = '{type_legend},type;{tab_legend},tabControlHeadline;{tab_section_legend},tabControlAddLink;';
+$dca['palettes'][\HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement::TYPE]      = '{type_legend},type;';
 
 $dca['subpalettes']['tabControlAddLink'] = 'tabControlLink,tabControlTarget';
 

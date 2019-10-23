@@ -18,7 +18,7 @@ use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
 
-class TabControlSeperatorElement extends ContentElement
+class TabControlSeparatorElement extends ContentElement
 {
     const TYPE = 'tabcontrolSeparator';
 
@@ -29,7 +29,8 @@ class TabControlSeperatorElement extends ContentElement
      */
     protected function compile()
     {
-        if (TL_MODE == 'BE') {
+        if (System::getContainer()->get('huh.utils.container')->isBackend())
+        {
             $this->Template = new BackendTemplate('be_tabs_control');
         }
 

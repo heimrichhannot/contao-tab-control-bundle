@@ -14,9 +14,9 @@ namespace HeimrichHannot\TabControlBundle\ContentElement;
 
 use Contao\BackendTemplate;
 use Contao\ContentElement;
-use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
+use HeimrichHannot\TabControlBundle\Asset\FrontendAssets;
 
 class TabControlStartElement extends ContentElement
 {
@@ -29,13 +29,12 @@ class TabControlStartElement extends ContentElement
      */
     protected function compile()
     {
-        $container = System::getContainer();
 
-        $this->Template->headline = $this->headline;
-        if (TL_MODE == 'BE') {
-            $this->Template           = new BackendTemplate('be_tabs_control');
-//            $this->Template->wildcard = '### TABCONTROL: START ###<br>'.$this->tabControlHeadline;
+        if (System::getContainer()->get('huh.utils.container')->isBackend()) {
+            $this->Template = new BackendTemplate('be_tabs_control');
         }
+
+        System::getContainer()->get(FrontendAssets::class)->addFrontendAssets();
 
         $tabs = System::getContainer()->get('huh.tab_control.helper.structure_tabs')->getTabDataForContentElement($this->id, $this->pid, $this->ptable);
 

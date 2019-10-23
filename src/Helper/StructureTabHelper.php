@@ -17,7 +17,7 @@ use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
 use function count;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeperatorElement;
+use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeparatorElement;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -48,7 +48,7 @@ class StructureTabHelper
         {
             foreach ($tabData['elements'] as $element)
             {
-                if (in_array($element['type'], [TabControlStartElement::TYPE, TabControlSeperatorElement::TYPE])) {
+                if (in_array($element['type'], [TabControlStartElement::TYPE, TabControlSeparatorElement::TYPE])) {
                     $tab = [];
                     $tab['headline'] = $element['tabControlHeadline'];
                     $tab['tabId'] = StringUtil::generateAlias($element['tabControlHeadline']).'_'.$element['id'];
@@ -102,7 +102,7 @@ class StructureTabHelper
         {
             $startElement = $config['startElement'];
         }
-        $seperatorElement = TabControlSeperatorElement::TYPE;
+        $seperatorElement = TabControlSeparatorElement::TYPE;
         if (isset($config['seperatorElement']))
         {
             $seperatorElement = $config['seperatorElement'];
