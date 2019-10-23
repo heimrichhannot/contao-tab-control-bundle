@@ -14,6 +14,7 @@ namespace HeimrichHannot\TabControlBundle\ContentElement;
 
 use Contao\BackendTemplate;
 use Contao\ContentElement;
+use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
 
@@ -40,4 +41,5 @@ class TabControlSeperatorElement extends ContentElement
         $this->Template->tabId = StringUtil::generateAlias($this->tabControlHeadline).'_'.$this->id;
         $this->Template->active = false;
     }
+
 }

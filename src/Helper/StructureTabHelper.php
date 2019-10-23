@@ -13,7 +13,9 @@ namespace HeimrichHannot\TabControlBundle\Helper;
 
 
 use Contao\ContentModel;
+use Contao\Controller;
 use Contao\StringUtil;
+use Contao\System;
 use function count;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeperatorElement;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement;
@@ -52,6 +54,10 @@ class StructureTabHelper
                     $tab['tabId'] = StringUtil::generateAlias($element['tabControlHeadline']).'_'.$element['id'];
                     $tab['active'] = $element['id'] === $id;
                     $tab['id'] = $element['id'];
+                    $tab['addTabLink'] = $element['tabControlAddLink'];
+                    $tab['tabLink'] = '/' . Controller::replaceInsertTags($element['tabControlLink']);
+                    $tab['openLinkInNewTab'] = $element['tabControlTarget'];
+
                     $tabs[] = $tab;
                 }
             }
