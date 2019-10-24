@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2019-10-24
+
+* updated UPGRADE.md
+
 ## [0.4.0] - 2019-10-23
 
 * added migration command
