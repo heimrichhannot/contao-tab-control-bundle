@@ -55,7 +55,7 @@ class StructureTabHelper
                     $tab['active'] = $element['id'] === $id;
                     $tab['id'] = $element['id'];
                     $tab['addTabLink'] = $element['tabControlAddLink'];
-                    $tab['tabLink'] = '/' . Controller::replaceInsertTags($element['tabControlLink']);
+                    $tab['tabLink'] = ((false === strpos($element['tabControlLink'], 'http')) ? '/' : '') . Controller::replaceInsertTags($element['tabControlLink']);
                     $tab['openLinkInNewTab'] = $element['tabControlTarget'];
 
                     $tabs[] = $tab;

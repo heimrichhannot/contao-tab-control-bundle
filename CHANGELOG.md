@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+
+## [0.4.2] - 2019-12-12
+
+* fixed removed trailing slash if external url is given as TabLink
+
 ## [0.4.1] - 2019-10-24
 
 * updated UPGRADE.md
