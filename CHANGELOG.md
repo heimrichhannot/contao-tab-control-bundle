@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [0.5.0-DEV] - 2020-07-31
 * updated encore config
 * increased minimum encore bundle support to 1.5
+* fixed migration command registration
 
 ## [0.4.2] - 2019-12-12
 
