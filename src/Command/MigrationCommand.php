@@ -16,6 +16,7 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Command\AbstractLockedCommand;
 use Contao\Model;
 use Contao\Model\Collection;
+use Contao\StringUtil;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeparatorElement;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement;
 use HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement;
@@ -27,15 +28,29 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MigrationCommand extends AbstractLockedCommand
 {
+    const MIGRATION_FRY = 'fry_accessible_tabs';
+    const MIGRATION_BOOTSTRAPPER = 'bootstrapper-tabs';
+    const MIGRATION_0_4 = '<0.4';
+    const MIGRATIONS = [
+        self::MIGRATION_FRY,
+        self::MIGRATION_BOOTSTRAPPER,
+        self::MIGRATION_0_4,
+    ];
+
     /**
      * @var bool
      */
     protected $dryRun = false;
+
+
     /**
      * @var array
      */
     private $migrationSql;
     private $upgradeNotices;
+
+    /** @var SymfonyStyle */
+    protected $io;
 
     protected function configure()
     {
@@ -43,6 +58,7 @@ class MigrationCommand extends AbstractLockedCommand
             ->setName('huh:tabcontrol:migrate')
             ->setDescription('Contao Tab Control Bundle migration.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, "Performs a run without writing to database.")
+            ->addOption('migration', null, InputOption::VALUE_REQUIRED, "Do migration directly without interrupt. Options: ".implode(", ", static::MIGRATIONS))
         ;
 
     }
@@ -67,24 +83,31 @@ class MigrationCommand extends AbstractLockedCommand
             $io->newLine();
         }
         $this->getContainer()->get('contao.framework')->initialize();
+        $this->io = $io;
 
-        $io->text("Please select from where you want to upgrade. Select contao-teaser, if you upgrade from a bundle 0.x release to 1.x.");
-        $question = new ChoiceQuestion(
-            "Please select upgrade option:",
-            [
-                "fry_accessible_tabs",
-                "<0.4",
-                "cancel"
-            ]
-        );
-        $migration = $io->askQuestion($question);
+        if ($input->hasOption('migration') && !empty($input->getOption("migration"))) {
+            $migration = $input->getOption('migration');
+        }
+        else {
+            $io->text("Please select from where you want to upgrade. Select contao-teaser, if you upgrade from a bundle 0.x release to 1.x.");
+            $question = new ChoiceQuestion(
+                "Please select upgrade option:",
+                array_merge(static::MIGRATIONS, ['cancel'])
+            );
+            $migration = $io->askQuestion($question);
+        }
+
+
 
         switch ($migration)
         {
-            case 'fry_accessible_tabs':
+            case static::MIGRATION_FRY:
                 $result = $this->migrateFromFryAccessibleTabs($io);
                 break;
-            case '<0.4':
+            case static::MIGRATION_BOOTSTRAPPER:
+                $result = $this->migrateFromBootstrapperTabs($io);
+                break;
+            case static::MIGRATION_0_4:
                 $result = $this->migrateFromLower0_4($io);
                 break;
             case 'cancel':
@@ -108,8 +131,6 @@ class MigrationCommand extends AbstractLockedCommand
         $io->success("Finished migration to tab control bundle.");
 
         return 0;
-
-
     }
 
     /**
@@ -126,6 +147,93 @@ class MigrationCommand extends AbstractLockedCommand
             }, $types)) . ')'
         ];
         return ContentModel::findAll($options);
+    }
+
+    public function migrateFromBootstrapperTabs(SymfonyStyle $io)
+    {
+        $contentElementTypes = [
+            'tabcontrol',
+        ];
+        $contentElements = $this->collect($contentElementTypes);
+
+        if (!$contentElements) {
+            $io->text("Found no content element from bootstrapper tabs module.");
+            return 0;
+        }
+
+        $io->text("Found <fg=yellow>".$contentElements->count()."</> elements.");
+
+        $tabgroupCache = [];
+        $depth = 0;
+        $depthNext = 0;
+
+        $contentElements = $contentElements->getModels();
+
+        if (!$io->isVerbose()) {
+            $io->progressStart(count($contentElements));
+        } else {
+            $io->newLine();
+        }
+
+        foreach ($contentElements as $index => $model)
+        {
+            if (!$io->isVerbose()) {
+                $io->progressAdvance();
+            }
+            if ("tabcontroltab" === $model->tabType) {
+                if ($depthNext > $depth) {
+                    $depth = $depthNext;
+                }
+                $tabgroupCache[$depth] = [];
+                $tabgroupCache[$depth]['structure'] = [$model];
+                $tabgroupCache[$depth]['headlines'] = array_column(StringUtil::deserialize($model->tab_tabs, true), "tab_tabs_name");
+                $model->tabControlHeadline = $tabgroupCache[$depth]['headlines'][0];
+                $model->tabControlRememberLastTab = $model->tab_remember;
+                $model->type = TabControlStartElement::TYPE;
+                $this->saveModel($model, ["tabControlHeadline", "tabControlRememberLastTab", "type"]);
+                $depthNext++;
+                continue;
+            }
+
+            if ("tabcontrolstart" === $model->tabType) {
+                if ("tabcontroltab" === $contentElements[($index - 1)]->tabType) {
+                    if ($io->isVerbose()) {
+                        $io->text("Delete content element id ".$model->id." and type".$model->type.".");
+                    }
+                    $this->deleteModel($model);
+                } else {
+                    $tabgroupCache[$depth]['structure'][] = $model;
+                    $model->tabControlHeadline = $tabgroupCache[$depth]['headlines'][count($tabgroupCache[$depth]['structure'])-1];
+                    $model->type = TabControlSeparatorElement::TYPE;
+                    if ($io->isVerbose()) {
+                        $io->text("Migrate content element id ".$model->id." and type".$model->type." to ".TabControlStopElement::TYPE.".");
+                    }
+                    $this->saveModel($model, ["type", "tabControlHeadline"]);
+                }
+                if ("tabcontrolstop" === $contentElements[($index + 1)]->tabType) {
+                    if ($io->isVerbose()) {
+                        $io->text("Delete content element id ".$contentElements[($index + 1)]->id." and type".$contentElements[($index + 1)]->type.".");
+                    }
+                    $this->deleteModel($contentElements[($index + 1)]);
+                }
+                continue;
+            }
+            if ("tabcontrol_end" === $model->tabType) {
+                if ($io->isVerbose()) {
+                    $io->text("Migrate content element id ".$model->id." and type".$model->type." to ".TabControlStopElement::TYPE.".");
+                }
+                $tabgroupCache[$depth]['structure'] = [$index => $model];
+                $model->type = TabControlStopElement::TYPE;
+                $this->saveModel($model, ["type"]);
+                $depthNext--;
+                if ($depth > 0) {
+                    $depth--;
+                }
+            }
+        }
+        if (!$io->isVerbose()) {
+            $io->progressFinish();
+        }
     }
 
     public function migrateFromFryAccessibleTabs(SymfonyStyle $io)
@@ -235,12 +343,35 @@ class MigrationCommand extends AbstractLockedCommand
         return 0;
     }
 
-    protected function saveModel(ContentModel $contentModel)
+    protected function saveModel(ContentModel $contentModel, array $modifiedFields = [])
     {
         if (!$this->dryRun)
         {
             $contentModel->tstamp = time();
             $contentModel->save();
+        }
+        if (!empty($modifiedFields)) {
+            $migrationSQL = "UPDATE tl_content SET ";
+            $set = '';
+            foreach ($modifiedFields as $field) {
+                if (is_numeric($contentModel->{$field})) {
+                    $set .= $field.'='.$contentModel->{$field}.', ';
+                } else {
+                    $set .= $field.'="'.$contentModel->{$field}.'", ';
+                }
+            }
+            $migrationSQL .= trim($set, ", ");
+            $migrationSQL .= " WHERE id=".$contentModel->id.";";
+
+            $this->addMigrationSql($migrationSQL);
+        }
+    }
+    protected function deleteModel(ContentModel $contentModel)
+    {
+        $this->addMigrationSql("DELETE FROM tl_content WHERE id=".$contentModel->id.";");
+        if (!$this->dryRun)
+        {
+            $contentModel->delete();
         }
     }
 

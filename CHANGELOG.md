@@ -2,10 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 
-## [0.5.0-DEV] - 2020-07-31
+## [0.5.0] - 2020-08-03
+* added migration for bootstrapper tabs to migration command
+* added direct migration option to migration command
 * updated encore config
 * increased minimum encore bundle support to 1.5
 * fixed migration command registration
+* fixed a bug to select first tab as active tab
 
 ## [0.4.2] - 2019-12-12
 

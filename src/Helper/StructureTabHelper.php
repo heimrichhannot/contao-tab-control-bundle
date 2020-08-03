@@ -52,7 +52,7 @@ class StructureTabHelper
                     $tab = [];
                     $tab['headline'] = $element['tabControlHeadline'];
                     $tab['tabId'] = StringUtil::generateAlias($element['tabControlHeadline']).'_'.$element['id'];
-                    $tab['active'] = $element['id'] === $id;
+                    $tab['active'] = (int) $element['id'] === $id;
                     $tab['id'] = $element['id'];
                     $tab['addTabLink'] = $element['tabControlAddLink'];
                     $tab['tabLink'] = ((false === strpos($element['tabControlLink'], 'http')) ? '/' : '') . Controller::replaceInsertTags($element['tabControlLink']);
