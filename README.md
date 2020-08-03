@@ -6,7 +6,7 @@ This Bundle brings Bootstrap 4 Tabs to Contao.
 
 * add 3 new Content Element: Start, Seperator, Stop
 * option to store last open tab in session (sessionStorage)
-* migration command for migration from contao-legacy/fry_accessible_tabs
+* migration command for migration from contao-legacy/fry_accessible_tabs or heimrichhannot/contao-bootstrapper tabs
 * [Encore Bundle](https://github.com/heimrichhannot/contao-encore-bundle) support
 
 
@@ -39,6 +39,11 @@ A note before install: this bundle does not come with bootstrap styles.
 This bundle brings three new content elements. To setup a tab section, choose the tab start element. For each new tab add an tab seperator element within the tab start and tab end element. The tab names are set in the tab start and the tab seperator elements.
 
 
+
 ### Command
 
-`huh:tabcontrol:migrate`: Provide migration from contao-legacy/fry_accessible_tabs and older bundle version. See `huh:tabcontrol:migrate --help` for options.
+`huh:tabcontrol:migrate`: Provide migration from contao-legacy/fry_accessible_tabs, heimrichhannot/contao-bootstrapper tabs and older bundle versions. See `huh:tabcontrol:migrate --help` for options.
+
+### Use with other frontend frameworks
+
+To use this bundle with other frameworks than bootstrap 4, you need to unset the frontend assets (with encore bundle just add and disable entry in your root page, without encore bundle use for example generatePage hook to unset `$GLOBALS['TL_JAVASCRIPT']['huh_contao-tab-control-bundle_bootstrap-tabs']`). Afterward you can override the ce_tabcontrol templates to correspond to your frontend framework syntax.
