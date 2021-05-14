@@ -5,13 +5,13 @@
   "author": "Thomas Körner <t.koerner@heimrich-hannot.de>",
   "license": "MIT",
   "dependencies": {
-    "bootstrap": "^4.0.0"
+    "bootstrap": "^5.0"
   },
   "devDependencies": {
-    "@symfony/webpack-encore": "^0.27",
-    "node-sass": "^4.12.0",
-    "postcss-loader": "^3.0.0",
-    "sass-loader": "^7.1.0",
-    "autoprefixer": "^9.1.5"
+    "@babel/plugin-transform-object-assign": "^7.12",
+    "@symfony/webpack-encore": "^1.3",
+    "postcss-loader": "^5.3",
+    "sass-loader": "^11.1",
+    "webpack-notifier": "^1.13"
   }
 }

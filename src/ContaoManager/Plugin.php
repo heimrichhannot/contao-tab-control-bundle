@@ -1,13 +1,4 @@
 <?php
-/**
- * Contao Open Source CMS
- *
- * Copyright (c) 2019 Heimrich & Hannot GmbH
- *
- * @author  Thomas Körner <t.koerner@heimrich-hannot.de>
- * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
- */
-
 
 namespace HeimrichHannot\TabControlBundle\ContaoManager;
 
@@ -20,8 +11,8 @@ use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Config\ConfigPluginInterface;
 use Contao\ManagerPlugin\Config\ContainerBuilder;
 use Contao\ManagerPlugin\Config\ExtensionPluginInterface;
-use HeimrichHannot\TabControlBundle\ContaoTabControlBundle;
-use HeimrichHannot\TwigTemplatesBundle\ContaoTwigTemplatesBundle;
+use HeimrichHannot\TabControlBundle\HeimrichHannotTabControlBundle;
+use HeimrichHannot\TwigTemplatesBundle\HeimrichHannotTwigTemplatesBundle;
 use HeimrichHannot\UtilsBundle\Container\ContainerUtil;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -36,9 +27,9 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, ExtensionP
     public function getBundles(ParserInterface $parser)
     {
         return [
-            BundleConfig::create(ContaoTabControlBundle::class)->setLoadAfter([
+            BundleConfig::create(HeimrichHannotTabControlBundle::class)->setLoadAfter([
                 ContaoCoreBundle::class,
-                ContaoTwigTemplatesBundle::class
+                HeimrichHannotTwigTemplatesBundle::class
             ])
         ];
     }
