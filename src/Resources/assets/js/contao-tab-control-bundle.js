@@ -1,4 +1,4 @@
-import 'bootstrap/js/dist/tab';
+import {Tab} from 'bootstrap';
 
 class ContaoTabControlBundle {
     static init() {
@@ -8,10 +8,10 @@ class ContaoTabControlBundle {
                 if (null !== savedTabPosition) {
                     let activeTab = tabControl.querySelector('#' + savedTabPosition);
                     if (null !== activeTab) {
-                        $(activeTab).tab('show');
+                        (new Tab(activeTab)).show();
                     }
                 } else {
-                    $(tabControl.querySelector('a.nav-link')).tab('show');
+                    (new Tab(tabControl.querySelector('a.nav-link'))).show();
                 }
             }
 
@@ -19,10 +19,11 @@ class ContaoTabControlBundle {
                 element.addEventListener('click', (e) => {
                     e.preventDefault();
 
-                    $(element).on('shown.bs.tab', function(e) {
+                    element.addEventListener('shown.bs.tab', function (event) {
                         sessionStorage.setItem(tabControl.id, e.target.id);
                     });
-                    $(element).tab('show');
+
+                    (new Tab(element)).show();
                 });
             });
         });

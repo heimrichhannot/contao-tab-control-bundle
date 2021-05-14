@@ -2,20 +2,20 @@
   "entrypoints": {
     "contao-tab-control-bundle": {
       "js": [
-        "/bundles/contaotabcontrol/contao-tab-control-bundle.js"
+        "/bundles/heimrichhannottabcontrol/contao-tab-control-bundle.js"
       ]
     },
-    "tabcontrol-backend": {
+    "contao-tab-control-bundle-backend": {
       "css": [
-        "/bundles/contaotabcontrol/tabcontrol-backend.css"
+        "/bundles/heimrichhannottabcontrol/contao-tab-control-bundle-backend.css"
       ],
       "js": [
-        "/bundles/contaotabcontrol/tabcontrol-backend.js"
+        "/bundles/heimrichhannottabcontrol/contao-tab-control-bundle-backend.js"
       ]
     },
     "bootstrap-tabs": {
       "js": [
-        "/bundles/contaotabcontrol/bootstrap-tabs.js"
+        "/bundles/heimrichhannottabcontrol/bootstrap-tabs.js"
       ]
     }
   }

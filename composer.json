@@ -22,9 +22,9 @@
         "issues": "https://github.com/heimrichhannot/contao-tab-control-bundle/issues"
     },
     "require": {
-        "php": "^7.1",
-        "contao/core-bundle": "^4.4",
-        "heimrichhannot/contao-utils-bundle": "^2.90"
+        "php": "^7.4|^8.0",
+        "contao/core-bundle": "^4.9",
+        "heimrichhannot/contao-utils-bundle": "^2.192"
     },
     "suggest": {
         "heimrichhannot/contao-encore-bundle": "Advanced integration of symfony webpack encore in contao."

@@ -1,25 +1,16 @@
 <?php
-/**
- * Contao Open Source CMS
- *
- * Copyright (c) 2019 Heimrich & Hannot GmbH
- *
- * @author  Thomas Körner <t.koerner@heimrich-hannot.de>
- * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
- */
-
 
 namespace HeimrichHannot\TabControlBundle\Command;
-
 
 use Contao\ContentModel;
 use Contao\CoreBundle\Command\AbstractLockedCommand;
 use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeparatorElement;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparatorElementController;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
+use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -60,9 +51,7 @@ class MigrationCommand extends AbstractLockedCommand
             ->addOption('dry-run', null, InputOption::VALUE_NONE, "Performs a run without writing to database.")
             ->addOption('migration', null, InputOption::VALUE_REQUIRED, "Do migration directly without interrupt. Options: ".implode(", ", static::MIGRATIONS))
         ;
-
     }
-
 
     /**
      * Executes the command.
@@ -189,7 +178,7 @@ class MigrationCommand extends AbstractLockedCommand
                 $tabgroupCache[$depth]['headlines'] = array_column(StringUtil::deserialize($model->tab_tabs, true), "tab_tabs_name");
                 $model->tabControlHeadline = $tabgroupCache[$depth]['headlines'][0];
                 $model->tabControlRememberLastTab = $model->tab_remember;
-                $model->type = TabControlStartElement::TYPE;
+                $model->type = TabControlStartElementController::TYPE;
                 $this->saveModel($model, ["tabControlHeadline", "tabControlRememberLastTab", "type"]);
                 $depthNext++;
                 continue;
@@ -204,9 +193,9 @@ class MigrationCommand extends AbstractLockedCommand
                 } else {
                     $tabgroupCache[$depth]['structure'][] = $model;
                     $model->tabControlHeadline = $tabgroupCache[$depth]['headlines'][count($tabgroupCache[$depth]['structure'])-1];
-                    $model->type = TabControlSeparatorElement::TYPE;
+                    $model->type = TabControlSeparatorElementController::TYPE;
                     if ($io->isVerbose()) {
-                        $io->text("Migrate content element id ".$model->id." and type".$model->type." to ".TabControlStopElement::TYPE.".");
+                        $io->text("Migrate content element id ".$model->id." and type".$model->type." to ".TabControlStopElementController::TYPE.".");
                     }
                     $this->saveModel($model, ["type", "tabControlHeadline"]);
                 }
@@ -220,10 +209,10 @@ class MigrationCommand extends AbstractLockedCommand
             }
             if ("tabcontrol_end" === $model->tabType) {
                 if ($io->isVerbose()) {
-                    $io->text("Migrate content element id ".$model->id." and type".$model->type." to ".TabControlStopElement::TYPE.".");
+                    $io->text("Migrate content element id ".$model->id." and type".$model->type." to ".TabControlStopElementController::TYPE.".");
                 }
                 $tabgroupCache[$depth]['structure'] = [$index => $model];
-                $model->type = TabControlStopElement::TYPE;
+                $model->type = TabControlStopElementController::TYPE;
                 $this->saveModel($model, ["type"]);
                 $depthNext--;
                 if ($depth > 0) {
@@ -254,7 +243,7 @@ class MigrationCommand extends AbstractLockedCommand
 
         foreach ($contentElements as $model)
         {
-            $data = $this->getContainer()->get('huh.tab_control.helper.structure_tabs')->structureTabsByContentElement($model, '', [
+            $data = $this->getContainer()->get(StructureTabHelper::class)->structureTabsByContentElement($model, '', [
                 'startElement' => 'accessible_tabs_start',
                 'seperatorElement' => 'accessible_tabs_separator',
                 'stopElement' => 'accessible_tabs_stop',
@@ -284,7 +273,7 @@ class MigrationCommand extends AbstractLockedCommand
                 {
                     $io->error('Second element of accessiblity tab group must be an seperator element. That is not the case. Skipping.');
                 }
-                $model->type = TabControlStartElement::TYPE;
+                $model->type = TabControlStartElementController::TYPE;
                 $model->tabControlHeadline = $data['elements'][1]['accessible_tabs_title'];
                 $model->tabControlRememberLastTab = $model->accessible_tabs_save_state;
 
@@ -293,14 +282,14 @@ class MigrationCommand extends AbstractLockedCommand
 
             if ('accessible_tabs_separator' === $model->type)
             {
-                $model->type = TabControlSeparatorElement::TYPE;
+                $model->type = TabControlSeparatorElementController::TYPE;
                 $model->tabControlHeadline = $model->accessible_tabs_title;
                 $this->addMigrationSql("UPDATE tl_content SET type='".$model->type."', tabControlHeadline='".$model->tabControlHeadline."' WHERE id=".$model->id.";");
             }
 
             if ('accessible_tabs_stop' === $model->type)
             {
-                $model->type = TabControlStopElement::TYPE;
+                $model->type = TabControlStopElementController::TYPE;
                 $this->addMigrationSql("UPDATE tl_content SET type='".$model->type."' WHERE id=".$model->id.";");
             }
 
@@ -335,7 +324,7 @@ class MigrationCommand extends AbstractLockedCommand
         /** @var ContentModel $contentElement */
         foreach ($contentElements as $contentElement)
         {
-            $contentElement->type = TabControlSeparatorElement::TYPE;
+            $contentElement->type = TabControlSeparatorElementController::TYPE;
             $this->saveModel($contentElement);
             $io->progressAdvance();
         }

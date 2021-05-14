@@ -40,7 +40,6 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, ExtensionP
     public function registerContainerConfiguration(LoaderInterface $loader, array $managerConfig)
     {
         $loader->load('@HeimrichHannotTabControlBundle/Resources/config/services.yml');
-        $loader->load('@HeimrichHannotTabControlBundle/Resources/config/datacontainers.yml');
     }
 
     /**

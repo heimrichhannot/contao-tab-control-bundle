@@ -1,95 +1,82 @@
 <?php
-/**
- * Contao Open Source CMS
- *
- * Copyright (c) 2019 Heimrich & Hannot GmbH
- *
- * @author  Thomas Körner <t.koerner@heimrich-hannot.de>
- * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
- */
-
 
 namespace HeimrichHannot\TabControlBundle\DataContainer;
 
-
 use Contao\ContentModel;
+use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
+use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
 
 class ContentContainer
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    protected StructureTabHelper $structureTabHelper;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(StructureTabHelper $structureTabHelper)
     {
-        $this->container = $container;
+        $this->structureTabHelper = $structureTabHelper;
     }
 
+    /**
+     * @Callback(table="tl_content", target="config.onsubmit")
+     */
     public function createTabControlElement(DataContainer $dc)
     {
-        if ($dc->activeRecord->type !== TabControlStartElement::TYPE)
-        {
+        if ($dc->activeRecord->type !== TabControlStartElementController::TYPE) {
             return;
         }
 
         $tabData = [
-            'id' => $dc->activeRecord->id,
-            'pid' => $dc->activeRecord->pid,
+            'id'     => $dc->activeRecord->id,
+            'pid'    => $dc->activeRecord->pid,
             'ptable' => $dc->activeRecord->ptable
         ];
-        $this->container->get('huh.tab_control.helper.structure_tabs')->structureTabs($tabData);
 
-        if (!isset($tabData['elements']) || count($tabData['elements']) > 1)
-        {
+        $this->structureTabHelper->structureTabs($tabData);
+
+        if (!isset($tabData['elements']) || count($tabData['elements']) > 1) {
             return;
         }
 
-        $endElement = new ContentModel();
-        $endElement->pid = $dc->activeRecord->pid;
-        $endElement->ptable = $dc->activeRecord->ptable;
-        $endElement->tstamp = $dc->activeRecord->tstamp;
+        $endElement          = new ContentModel();
+        $endElement->pid     = $dc->activeRecord->pid;
+        $endElement->ptable  = $dc->activeRecord->ptable;
+        $endElement->tstamp  = $dc->activeRecord->tstamp;
         $endElement->sorting = $dc->activeRecord->sorting * 2;
-        $endElement->type = TabControlStopElement::TYPE;
+        $endElement->type    = TabControlStopElementController::TYPE;
         $endElement->save();
     }
 
+    /**
+     * @Callback(table="tl_content", target="config.ondelete")
+     */
     public function deleteTabControlElement(DataContainer $dc)
     {
-        if ($dc->activeRecord->type !== TabControlStartElement::TYPE && $dc->activeRecord->type !== TabControlStopElement::TYPE)
-        {
+        if ($dc->activeRecord->type !== TabControlStartElementController::TYPE && $dc->activeRecord->type !== TabControlStopElementController::TYPE) {
             return;
         }
 
         $tabData = [
-            'id' => $dc->activeRecord->id,
-            'pid' => $dc->activeRecord->pid,
+            'id'     => $dc->activeRecord->id,
+            'pid'    => $dc->activeRecord->pid,
             'ptable' => $dc->activeRecord->ptable
         ];
 
-        $this->container->get('huh.tab_control.helper.structure_tabs')->structureTabs($tabData);
+        $this->structureTabHelper->structureTabs($tabData);
 
-        if (!isset($tabData['elements']) || count($tabData['elements']) < 2)
-        {
+        if (!isset($tabData['elements']) || count($tabData['elements']) < 2) {
             return;
         }
 
-        foreach ($tabData['elements'] as $element)
-        {
+        foreach ($tabData['elements'] as $element) {
             if ($element['id'] === $dc->activeRecord->id) {
                 continue;
             }
             $contentElement = ContentModel::findByPk($element['id']);
-            if ($contentElement)
-            {
+            if ($contentElement) {
                 $contentElement->delete();
             }
         }
     }
-
-
 }

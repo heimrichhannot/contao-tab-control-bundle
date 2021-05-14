@@ -15,11 +15,9 @@ namespace HeimrichHannot\TabControlBundle\Helper;
 use Contao\ContentModel;
 use Contao\Controller;
 use Contao\StringUtil;
-use Contao\System;
-use function count;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlSeparatorElement;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlStartElement;
-use HeimrichHannot\TabControlBundle\ContentElement\TabControlStopElement;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparatorElementController;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class StructureTabHelper
@@ -44,18 +42,16 @@ class StructureTabHelper
         $this->structureTabs($tabData, '', ['ptable' => $ptable]);
 
         $tabs = [];
-        if (isset($tabData['elements']))
-        {
-            foreach ($tabData['elements'] as $element)
-            {
-                if (in_array($element['type'], [TabControlStartElement::TYPE, TabControlSeparatorElement::TYPE])) {
-                    $tab = [];
-                    $tab['headline'] = $element['tabControlHeadline'];
-                    $tab['tabId'] = StringUtil::generateAlias($element['tabControlHeadline']).'_'.$element['id'];
-                    $tab['active'] = (int) $element['id'] === $id;
-                    $tab['id'] = $element['id'];
-                    $tab['addTabLink'] = $element['tabControlAddLink'];
-                    $tab['tabLink'] = ((false === strpos($element['tabControlLink'], 'http')) ? '/' : '') . Controller::replaceInsertTags($element['tabControlLink']);
+        if (isset($tabData['elements'])) {
+            foreach ($tabData['elements'] as $element) {
+                if (in_array($element['type'], [TabControlStartElementController::TYPE, TabControlSeparatorElementController::TYPE])) {
+                    $tab                     = [];
+                    $tab['headline']         = $element['tabControlHeadline'];
+                    $tab['tabId']            = StringUtil::generateAlias($element['tabControlHeadline']) . '_' . $element['id'];
+                    $tab['active']           = (int)$element['id'] === $id;
+                    $tab['id']               = $element['id'];
+                    $tab['addTabLink']       = $element['tabControlAddLink'];
+                    $tab['tabLink']          = ((false === strpos($element['tabControlLink'], 'http')) ? '/' : '') . Controller::replaceInsertTags($element['tabControlLink']);
                     $tab['openLinkInNewTab'] = $element['tabControlTarget'];
 
                     $tabs[] = $tab;
@@ -73,8 +69,8 @@ class StructureTabHelper
      */
     public function structureTabsByContentElement(ContentModel $element, string $prefix = '', array $config = [])
     {
-        $data['id'] = $element->id;
-        $data['pid'] = $element->pid;
+        $data['id']     = $element->id;
+        $data['pid']    = $element->pid;
         $data['ptable'] = $element->ptable;
         $this->structureTabs($data, $prefix, $config);
         return $data;
@@ -92,28 +88,24 @@ class StructureTabHelper
             return;
         }
 
-        if (!isset($data['ptable']))
-        {
+        if (!isset($data['ptable'])) {
             $data['ptable'] = 'tl_article';
         }
 
-        $startElement = TabControlStartElement::TYPE;
-        if (isset($config['startElement']))
-        {
+        $startElement = TabControlStartElementController::TYPE;
+        if (isset($config['startElement'])) {
             $startElement = $config['startElement'];
         }
-        $seperatorElement = TabControlSeparatorElement::TYPE;
-        if (isset($config['seperatorElement']))
-        {
+        $seperatorElement = TabControlSeparatorElementController::TYPE;
+        if (isset($config['seperatorElement'])) {
             $seperatorElement = $config['seperatorElement'];
         }
-        $stopElement = TabControlStopElement::TYPE;
-        if (isset($config['stopElement']))
-        {
+        $stopElement = TabControlStopElementController::TYPE;
+        if (isset($config['stopElement'])) {
             $stopElement = $config['stopElement'];
         }
 
-        $cacheKey = $data['ptable'].'_'.$data['pid'];
+        $cacheKey = $data['ptable'] . '_' . $data['pid'];
 
         if (!isset($this->tabsStartStopCache[$cacheKey])) {
             if (null !== ($elements = $this->container->get('huh.utils.model')->findModelInstancesBy(
@@ -155,16 +147,16 @@ class StructureTabHelper
                 foreach ($elementGroup as $i => $element) {
                     if ($data['id'] == $element['id']) {
                         if (0 === $i) {
-                            $data[$prefix.'first'] = true;
+                            $data[$prefix . 'first'] = true;
                         }
 
                         if ($i === count($elementGroup) - 1) {
-                            $data[$prefix.'last'] = true;
+                            $data[$prefix . 'last'] = true;
                         }
 
-                        $data[$prefix.'parentId'] = $elementGroup[0]['id'];
-                        $data['elements'] = $elementGroup;
-                        $data['current'] = $element;
+                        $data[$prefix . 'parentId'] = $elementGroup[0]['id'];
+                        $data['elements']           = $elementGroup;
+                        $data['current']            = $element;
 
                         break 2;
                     }
@@ -185,43 +177,34 @@ class StructureTabHelper
      */
     private function buildCache(&$elements, string $cacheKey, string $startElement, string $seperatorElement, string $stopElement, array $processedElements = []): array
     {
-        $closed = true;
+        $closed    = true;
         $iteration = count($this->tabsStartStopCache[$cacheKey]);
 
-        foreach ($elements as $i => $element)
-        {
-            if (in_array($element->id, $processedElements))
-            {
+        foreach ($elements as $i => $element) {
+            if (in_array($element->id, $processedElements)) {
                 continue;
             }
 
-            if ($startElement === $element->type)
-            {
-                if (count($this->tabsStartStopCache[$cacheKey]) < 1)
-                {
+            if ($startElement === $element->type) {
+                if (count($this->tabsStartStopCache[$cacheKey]) < 1) {
                     $this->tabsStartStopCache[$cacheKey][] = [];
                 }
-                if (!$closed)
-                {
+                if (!$closed) {
                     $this->tabsStartStopCache[$cacheKey][] = [];
-                    $processedElements = $this->buildCache($elements, $cacheKey, $startElement, $seperatorElement, $stopElement, $processedElements);
+                    $processedElements                     = $this->buildCache($elements, $cacheKey, $startElement, $seperatorElement, $stopElement, $processedElements);
 
-                }
-                else {
+                } else {
                     $this->tabsStartStopCache[$cacheKey][$iteration][] = $element->row();
-                    $closed = false;
+                    $closed                                            = false;
                 }
-            } elseif ($seperatorElement === $element->type)
-            {
+            } elseif ($seperatorElement === $element->type) {
                 $this->tabsStartStopCache[$cacheKey][$iteration][] = $element->row();
-            } elseif ($stopElement === $element->type)
-            {
+            } elseif ($stopElement === $element->type) {
                 $this->tabsStartStopCache[$cacheKey][$iteration][] = $element->row();
-                $this->tabsStartStopCache[$cacheKey][]                                                  = [];
+                $this->tabsStartStopCache[$cacheKey][]             = [];
                 $iteration++;
                 $closed = true;
-                if ($iteration > 0)
-                {
+                if ($iteration > 0) {
                     $processedElements[] = $element->id;
                     return $processedElements;
                 }

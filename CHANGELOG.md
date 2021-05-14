@@ -2,9 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.0] - 2021-05-*
+## [0.6.0] - 2021-05-14
 
-- moved to bootstrap 5
+- moved to bootstrap 5, contao 4.9 and php 7.4
+- refactoring
 
 ## [0.5.0] - 2020-08-03
 
