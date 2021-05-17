@@ -36,15 +36,14 @@ class TabControlStopElementController extends AbstractContentElementController
 
     public function __construct(ContainerUtil $containerUtil, StructureTabHelper $structureTabHelper, FrontendAsset $frontendAsset)
     {
-        $this->containerUtil      = $containerUtil;
+        $this->containerUtil = $containerUtil;
         $this->structureTabHelper = $structureTabHelper;
         $this->frontendAsset = $frontendAsset;
     }
 
     protected function getResponse(Template $template, ContentModel $element, Request $request): ?Response
     {
-        if ($this->containerUtil->isBackend())
-        {
+        if ($this->containerUtil->isBackend()) {
             $template = new BackendTemplate('be_tabs_control');
         }
 

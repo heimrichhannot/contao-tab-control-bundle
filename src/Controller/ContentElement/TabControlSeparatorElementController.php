@@ -35,7 +35,7 @@ class TabControlSeparatorElementController extends AbstractContentElementControl
 
     public function __construct(ContainerUtil $containerUtil, StructureTabHelper $structureTabHelper)
     {
-        $this->containerUtil      = $containerUtil;
+        $this->containerUtil = $containerUtil;
         $this->structureTabHelper = $structureTabHelper;
     }
 
@@ -47,11 +47,11 @@ class TabControlSeparatorElementController extends AbstractContentElementControl
 
         $tabs = $this->structureTabHelper->getTabDataForContentElement($element->id, $element->pid, $element->ptable);
 
-        $template->id                 = $element->id;
-        $template->tabs               = $tabs;
+        $template->id = $element->id;
+        $template->tabs = $tabs;
         $template->tabControlHeadline = $element->tabControlHeadline;
-        $template->tabId              = StringUtil::generateAlias($element->tabControlHeadline) . '_' . $element->id;
-        $template->active             = false;
+        $template->tabId = StringUtil::generateAlias($element->tabControlHeadline).'_'.$element->id;
+        $template->active = false;
 
         return $template->getResponse();
     }

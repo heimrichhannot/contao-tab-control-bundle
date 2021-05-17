@@ -37,7 +37,7 @@ class TabControlStartElementController extends AbstractContentElementController
 
     public function __construct(ContainerUtil $containerUtil, StructureTabHelper $structureTabHelper, FrontendAsset $frontendAsset)
     {
-        $this->containerUtil      = $containerUtil;
+        $this->containerUtil = $containerUtil;
         $this->structureTabHelper = $structureTabHelper;
         $this->frontendAsset = $frontendAsset;
     }

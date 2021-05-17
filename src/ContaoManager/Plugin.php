@@ -1,7 +1,12 @@
 <?php
 
-namespace HeimrichHannot\TabControlBundle\ContaoManager;
+/*
+ * Copyright (c) 2021 Heimrich & Hannot GmbH
+ *
+ * @license LGPL-3.0-or-later
+ */
 
+namespace HeimrichHannot\TabControlBundle\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
@@ -18,7 +23,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Plugin implements BundlePluginInterface, ConfigPluginInterface, ExtensionPluginInterface
 {
-
     /**
      * Gets a list of autoload configurations for this bundle.
      *
@@ -29,8 +33,8 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, ExtensionP
         return [
             BundleConfig::create(HeimrichHannotTabControlBundle::class)->setLoadAfter([
                 ContaoCoreBundle::class,
-                HeimrichHannotTwigTemplatesBundle::class
-            ])
+                HeimrichHannotTwigTemplatesBundle::class,
+            ]),
         ];
     }
 
