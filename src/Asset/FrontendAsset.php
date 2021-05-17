@@ -35,7 +35,6 @@ class FrontendAsset
                 $this->encoreFrontendAsset->addActiveEntrypoint('contao-tab-control-bundle');
             }
 
-            $GLOBALS['TL_JAVASCRIPT']['huh_contao-tab-control-bundle_bootstrap-tabs'] = 'bundles/heimrichhannottabcontrol/bootstrap-tabs.js';
             $GLOBALS['TL_JAVASCRIPT']['huh_contao-tab-control-bundle']                = 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle.js';
         } else {
             $GLOBALS['TL_CSS']['huh_contao-tab-control-bundle_backend'] = 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle-backend.css';

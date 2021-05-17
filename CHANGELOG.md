@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2021-05-17
+
+- added php cs fixer config
+- fixed some typos
+- removed bootstrap as dependency for non-encore implementation in order to avoid duplicate imports
+
 ## [0.6.0] - 2021-05-14
 
 - moved to bootstrap 5, contao 4.9 and php 7.4

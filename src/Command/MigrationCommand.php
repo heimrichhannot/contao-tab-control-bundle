@@ -245,7 +245,7 @@ class MigrationCommand extends AbstractLockedCommand
         {
             $data = $this->getContainer()->get(StructureTabHelper::class)->structureTabsByContentElement($model, '', [
                 'startElement' => 'accessible_tabs_start',
-                'seperatorElement' => 'accessible_tabs_separator',
+                'separatorElement' => 'accessible_tabs_separator',
                 'stopElement' => 'accessible_tabs_stop',
             ]);
 
@@ -271,7 +271,7 @@ class MigrationCommand extends AbstractLockedCommand
                 }
                 if ($data['elements'][1]['type'] !== 'accessible_tabs_separator')
                 {
-                    $io->error('Second element of accessiblity tab group must be an seperator element. That is not the case. Skipping.');
+                    $io->error('Second element of accessiblity tab group must be an separator element. That is not the case. Skipping.');
                 }
                 $model->type = TabControlStartElementController::TYPE;
                 $model->tabControlHeadline = $data['elements'][1]['accessible_tabs_title'];
@@ -308,7 +308,7 @@ class MigrationCommand extends AbstractLockedCommand
     public function migrateFromLower0_4(SymfonyStyle $io)
     {
         $contentElementTypes = [
-            'tabcontrolSeperator',
+            'tabcontrolSeparator',
         ];
         $contentElements = $this->collect($contentElementTypes);
 

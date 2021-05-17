@@ -80,7 +80,7 @@ class StructureTabHelper
     /**
      * @param array $data Data describing the tab.
      * @param string $prefix The prefix for the flags
-     * @param array $config Options: startElement, seperatorElement, stopElement
+     * @param array $config Options: startElement, separatorElement, stopElement
      */
     public function structureTabs(array &$data, string $prefix = '', array $config = [])
     {
@@ -96,9 +96,9 @@ class StructureTabHelper
         if (isset($config['startElement'])) {
             $startElement = $config['startElement'];
         }
-        $seperatorElement = TabControlSeparatorElementController::TYPE;
-        if (isset($config['seperatorElement'])) {
-            $seperatorElement = $config['seperatorElement'];
+        $separatorElement = TabControlSeparatorElementController::TYPE;
+        if (isset($config['separatorElement'])) {
+            $separatorElement = $config['separatorElement'];
         }
         $stopElement = TabControlStopElementController::TYPE;
         if (isset($config['stopElement'])) {
@@ -127,7 +127,7 @@ class StructureTabHelper
 
                 $closed = true;
 
-                $this->buildCache($elements, $cacheKey, $startElement, $seperatorElement, $stopElement);
+                $this->buildCache($elements, $cacheKey, $startElement, $separatorElement, $stopElement);
 
                 // remove trailing empty arrays
                 $cleaned = [];
@@ -170,12 +170,12 @@ class StructureTabHelper
      * @param string $cacheKey
      * @param int $iteration
      * @param string $startElement
-     * @param string $seperatorElement
+     * @param string $separatorElement
      * @param string $stopElement
      * @param array $processedElements
      * @return array
      */
-    private function buildCache(&$elements, string $cacheKey, string $startElement, string $seperatorElement, string $stopElement, array $processedElements = []): array
+    private function buildCache(&$elements, string $cacheKey, string $startElement, string $separatorElement, string $stopElement, array $processedElements = []): array
     {
         $closed    = true;
         $iteration = count($this->tabsStartStopCache[$cacheKey]);
@@ -191,13 +191,13 @@ class StructureTabHelper
                 }
                 if (!$closed) {
                     $this->tabsStartStopCache[$cacheKey][] = [];
-                    $processedElements                     = $this->buildCache($elements, $cacheKey, $startElement, $seperatorElement, $stopElement, $processedElements);
+                    $processedElements                     = $this->buildCache($elements, $cacheKey, $startElement, $separatorElement, $stopElement, $processedElements);
 
                 } else {
                     $this->tabsStartStopCache[$cacheKey][$iteration][] = $element->row();
                     $closed                                            = false;
                 }
-            } elseif ($seperatorElement === $element->type) {
+            } elseif ($separatorElement === $element->type) {
                 $this->tabsStartStopCache[$cacheKey][$iteration][] = $element->row();
             } elseif ($stopElement === $element->type) {
                 $this->tabsStartStopCache[$cacheKey][$iteration][] = $element->row();
