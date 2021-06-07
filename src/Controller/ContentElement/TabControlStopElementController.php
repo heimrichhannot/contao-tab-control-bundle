@@ -16,7 +16,6 @@ use Contao\Template;
 use HeimrichHannot\TabControlBundle\Asset\FrontendAsset;
 use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
 use HeimrichHannot\UtilsBundle\Container\ContainerUtil;
-use HeimrichHannot\UtilsBundle\Model\ModelUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,11 +27,19 @@ class TabControlStopElementController extends AbstractContentElementController
     const TYPE = 'tabcontrolStop';
 
     /**
-     * @var ModelUtil
+     * @var ContainerUtil
      */
-    protected ContainerUtil      $containerUtil;
-    protected StructureTabHelper $structureTabHelper;
-    protected FrontendAsset      $frontendAsset;
+    protected $containerUtil;
+
+    /**
+     * @var StructureTabHelper
+     */
+    protected $structureTabHelper;
+
+    /**
+     * @var FrontendAsset
+     */
+    protected $frontendAsset;
 
     public function __construct(ContainerUtil $containerUtil, StructureTabHelper $structureTabHelper, FrontendAsset $frontendAsset)
     {

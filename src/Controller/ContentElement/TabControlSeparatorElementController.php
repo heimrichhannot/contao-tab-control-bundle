@@ -16,7 +16,6 @@ use Contao\StringUtil;
 use Contao\Template;
 use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
 use HeimrichHannot\UtilsBundle\Container\ContainerUtil;
-use HeimrichHannot\UtilsBundle\Model\ModelUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,10 +27,14 @@ class TabControlSeparatorElementController extends AbstractContentElementControl
     const TYPE = 'tabcontrolSeparator';
 
     /**
-     * @var ModelUtil
+     * @var ContainerUtil
      */
-    protected ContainerUtil      $containerUtil;
-    protected StructureTabHelper $structureTabHelper;
+    protected $containerUtil;
+
+    /**
+     * @var StructureTabHelper
+     */
+    protected $structureTabHelper;
 
     public function __construct(ContainerUtil $containerUtil, StructureTabHelper $structureTabHelper)
     {

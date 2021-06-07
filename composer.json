@@ -22,7 +22,7 @@
         "issues": "https://github.com/heimrichhannot/contao-tab-control-bundle/issues"
     },
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^7.2|^8.0",
         "contao/core-bundle": "^4.9",
         "heimrichhannot/contao-utils-bundle": "^2.192"
     },
