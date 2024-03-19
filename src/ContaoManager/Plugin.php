@@ -21,7 +21,7 @@ use HeimrichHannot\TwigTemplatesBundle\HeimrichHannotTwigTemplatesBundle;
 use HeimrichHannot\UtilsBundle\Container\ContainerUtil;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-class Plugin implements BundlePluginInterface, ConfigPluginInterface, ExtensionPluginInterface
+class Plugin implements BundlePluginInterface, ConfigPluginInterface
 {
     /**
      * Gets a list of autoload configurations for this bundle.
@@ -44,22 +44,5 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, ExtensionP
     public function registerContainerConfiguration(LoaderInterface $loader, array $managerConfig)
     {
         $loader->load('@HeimrichHannotTabControlBundle/Resources/config/services.yml');
-    }
-
-    /**
-     * Allows a plugin to override extension configuration.
-     *
-     * @param string $extensionName
-     *
-     * @return array<string,mixed>
-     */
-    public function getExtensionConfig($extensionName, array $extensionConfigs, ContainerBuilder $container)
-    {
-        return ContainerUtil::mergeConfigFile(
-            'huh_encore',
-            $extensionName,
-            $extensionConfigs,
-            __DIR__.'/../Resources/config/config_encore.yml'
-        );
     }
 }

@@ -35,10 +35,6 @@
         }
     },
     "extra": {
-        "contao-manager-plugin": "HeimrichHannot\\TabControlBundle\\ContaoManager\\Plugin",
-        "foxy": true
-    },
-    "conflict": {
-        "heimrichhannot/contao-encore-bundle": "<1.5"
+        "contao-manager-plugin": "HeimrichHannot\\TabControlBundle\\ContaoManager\\Plugin"
     }
 }
