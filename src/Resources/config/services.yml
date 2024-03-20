@@ -5,4 +5,4 @@ services:
     public: true
 
   HeimrichHannot\TabControlBundle\:
-    resource: '../../{Asset,Command,Controller,DataContainer,EventListener,Helper}/*'
+    resource: '../../{Asset,Command,Controller,DataContainer,EventListener,Helper,Migration}/*'
