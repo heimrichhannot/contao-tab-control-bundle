@@ -337,9 +337,7 @@ class MigrationCommand extends Command
     protected function collect(array $types): ?Collection
     {
         $options['column'] = [
-            'tl_content.type IN ('.implode(',', array_map(function ($type) {
-                return '"'.addslashes($type).'"';
-            }, $types)).')',
+            'tl_content.type IN ('.implode(',', array_map(fn($type) => '"'.addslashes($type).'"', $types)).')',
         ];
 
         return ContentModel::findAll($options);

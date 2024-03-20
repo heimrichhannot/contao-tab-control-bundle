@@ -75,7 +75,7 @@ class StructureTabHelper
      * @param string $prefix The prefix for the flags
      * @param array  $config Options: startElement, separatorElement, stopElement
      */
-    public function structureTabs(array &$data, string $prefix = '', array $config = [])
+    public function structureTabs(array &$data, string $prefix = '', array $config = []): void
     {
         if (!isset($data['id']) || !isset($data['pid'])) {
             return;

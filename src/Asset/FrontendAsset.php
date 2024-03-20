@@ -25,7 +25,7 @@ class FrontendAsset
         $this->utils = $utils;
     }
 
-    public function addFrontendAsset()
+    public function addFrontendAsset(): void
     {
         if ($this->utils->container()->isFrontend()) {
             $this->addPageEntrypoint('contao-tab-control-bundle', [
