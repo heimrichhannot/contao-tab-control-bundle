@@ -1,5 +1,9 @@
 <?php
 
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparatorElementController;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
+use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
+
 $dca = &$GLOBALS['TL_DCA']['tl_content'];
 
 /**
@@ -7,11 +11,11 @@ $dca = &$GLOBALS['TL_DCA']['tl_content'];
  */
 $dca['palettes']['__selector__'][] = 'tabControlAddLink';
 
-$dca['palettes'][\HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController::TYPE]     =
+$dca['palettes'][TabControlStartElementController::TYPE]     =
     '{type_legend},type,headline;{tab_legend},tabControlHeadline;{tab_section_legend},tabControlRememberLastTab,tabControlAddLink;';
-$dca['palettes'][\HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparatorElementController::TYPE] =
+$dca['palettes'][TabControlSeparatorElementController::TYPE] =
     '{type_legend},type;{tab_legend},tabControlHeadline;{tab_section_legend},tabControlAddLink;';
-$dca['palettes'][\HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController::TYPE]      =
+$dca['palettes'][TabControlStopElementController::TYPE]      =
     '{type_legend},type;';
 
 /**
