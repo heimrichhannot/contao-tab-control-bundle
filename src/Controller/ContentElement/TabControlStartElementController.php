@@ -16,7 +16,7 @@ use Contao\StringUtil;
 use Contao\Template;
 use HeimrichHannot\TabControlBundle\Asset\FrontendAsset;
 use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
-use HeimrichHannot\UtilsBundle\Container\ContainerUtil;
+use HeimrichHannot\UtilsBundle\Util\Utils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,33 +25,22 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TabControlStartElementController extends AbstractContentElementController
 {
-    const TYPE = 'tabcontrolStart';
+    public const TYPE = 'tabcontrolStart';
 
-    /**
-     * @var ContainerUtil
-     */
-    protected $containerUtil;
+    protected StructureTabHelper $structureTabHelper;
+    protected FrontendAsset $frontendAsset;
+    private Utils $utils;
 
-    /**
-     * @var StructureTabHelper
-     */
-    protected $structureTabHelper;
-
-    /**
-     * @var FrontendAsset
-     */
-    protected $frontendAsset;
-
-    public function __construct(ContainerUtil $containerUtil, StructureTabHelper $structureTabHelper, FrontendAsset $frontendAsset)
+    public function __construct(StructureTabHelper $structureTabHelper, FrontendAsset $frontendAsset, Utils $utils)
     {
-        $this->containerUtil = $containerUtil;
         $this->structureTabHelper = $structureTabHelper;
         $this->frontendAsset = $frontendAsset;
+        $this->utils = $utils;
     }
 
     protected function getResponse(Template $template, ContentModel $element, Request $request): ?Response
     {
-        if ($this->containerUtil->isBackend()) {
+        if ($this->utils->container()->isBackend()) {
             $template = new BackendTemplate('be_tabs_control');
         }
 

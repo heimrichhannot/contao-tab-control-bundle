@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  HeimrichHannot\TabControlBundle\:
+    resource: '../src/{Asset,Command,Controller,DataContainer,EventListener,Helper,Migration}/*'

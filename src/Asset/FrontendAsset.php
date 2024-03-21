@@ -8,42 +8,35 @@
 
 namespace HeimrichHannot\TabControlBundle\Asset;
 
-use HeimrichHannot\UtilsBundle\Container\ContainerUtil;
+use HeimrichHannot\EncoreContracts\PageAssetsTrait;
+use HeimrichHannot\UtilsBundle\Util\Utils;
 
 class FrontendAsset
 {
-    /**
-     * @var \HeimrichHannot\EncoreBundle\Asset\FrontendAsset
-     */
-    protected $encoreFrontendAsset;
-    /**
-     * @var ContainerUtil
-     */
-    private $containerUtil;
+    use PageAssetsTrait;
+
+    private Utils $utils;
 
     /**
      * FrontendAsset constructor.
      */
-    public function __construct(ContainerUtil $containerUtil)
+    public function __construct(Utils $utils)
     {
-        $this->containerUtil = $containerUtil;
+        $this->utils = $utils;
     }
 
-    public function setEncoreFrontendAsset(\HeimrichHannot\EncoreBundle\Asset\FrontendAsset $encoreFrontendAsset): void
+    public function addFrontendAsset(): void
     {
-        $this->encoreFrontendAsset = $encoreFrontendAsset;
-    }
-
-    public function addFrontendAsset()
-    {
-        if ($this->containerUtil->isFrontend()) {
-            if ($this->encoreFrontendAsset) {
-                $this->encoreFrontendAsset->addActiveEntrypoint('contao-tab-control-bundle');
-            }
-
-            $GLOBALS['TL_JAVASCRIPT']['huh_contao-tab-control-bundle'] = 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle.js';
-        } else {
-            $GLOBALS['TL_CSS']['huh_contao-tab-control-bundle_backend'] = 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle-backend.css';
+        if ($this->utils->container()->isFrontend()) {
+            $this->addPageEntrypoint('contao-tab-control-bundle', [
+                'TL_JAVASCRIPT' => [
+                    'huh_contao-tab-control-bundle' => 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle.js',
+                ],
+                'TL_CSS' => [
+                    'huh_contao-tab-control-bundle' => 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle.css',
+                ],
+            ]);
         }
+
     }
 }

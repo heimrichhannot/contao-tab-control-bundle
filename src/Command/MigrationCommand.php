@@ -9,7 +9,7 @@
 namespace HeimrichHannot\TabControlBundle\Command;
 
 use Contao\ContentModel;
-use Contao\CoreBundle\Command\AbstractLockedCommand;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
@@ -17,38 +17,39 @@ use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparato
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
 use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class MigrationCommand extends AbstractLockedCommand
+class MigrationCommand extends Command
 {
-    const MIGRATION_FRY = 'fry_accessible_tabs';
-    const MIGRATION_BOOTSTRAPPER = 'bootstrapper-tabs';
-    const MIGRATION_0_4 = '<0.4';
-    const MIGRATIONS = [
+    protected const MIGRATION_FRY = 'fry_accessible_tabs';
+    protected const MIGRATION_BOOTSTRAPPER = 'bootstrapper-tabs';
+    protected const MIGRATION_0_4 = '<0.4';
+    protected const MIGRATIONS = [
         self::MIGRATION_FRY,
         self::MIGRATION_BOOTSTRAPPER,
         self::MIGRATION_0_4,
     ];
 
-    /**
-     * @var bool
-     */
-    protected $dryRun = false;
+    protected bool $dryRun = false;
+    protected SymfonyStyle $io;
 
-    /** @var SymfonyStyle */
-    protected $io;
+    private array $migrationSql = [];
+    private StructureTabHelper $structureTabHelper;
+    private ContaoFramework $contaoFramework;
 
-    /**
-     * @var array
-     */
-    private $migrationSql;
-    private $upgradeNotices;
+    public function __construct(StructureTabHelper $structureTabHelper, ContaoFramework $contaoFramework)
+    {
+        parent::__construct();
+        $this->structureTabHelper = $structureTabHelper;
+        $this->contaoFramework = $contaoFramework;
+    }
 
-    public function migrateFromBootstrapperTabs(SymfonyStyle $io)
+    public function migrateFromBootstrapperTabs(SymfonyStyle $io): int
     {
         $contentElementTypes = [
             'tabcontrol',
@@ -141,9 +142,11 @@ class MigrationCommand extends AbstractLockedCommand
         if (!$io->isVerbose()) {
             $io->progressFinish();
         }
+
+        return 0;
     }
 
-    public function migrateFromFryAccessibleTabs(SymfonyStyle $io)
+    public function migrateFromFryAccessibleTabs(SymfonyStyle $io): int
     {
         $contentElementTypes = [
             'accessible_tabs_start',
@@ -161,7 +164,7 @@ class MigrationCommand extends AbstractLockedCommand
         $io->text('Found <fg=yellow>'.$contentElements->count().'</> elements.');
 
         foreach ($contentElements as $model) {
-            $data = $this->getContainer()->get(StructureTabHelper::class)->structureTabsByContentElement($model, '', [
+            $data = $this->structureTabHelper->structureTabsByContentElement($model, '', [
                 'startElement' => 'accessible_tabs_start',
                 'separatorElement' => 'accessible_tabs_separator',
                 'stopElement' => 'accessible_tabs_stop',
@@ -209,8 +212,10 @@ class MigrationCommand extends AbstractLockedCommand
 
             $this->saveModel($model);
 
-            return 0;
+
         }
+
+        return 0;
     }
 
     /**
@@ -261,12 +266,7 @@ class MigrationCommand extends AbstractLockedCommand
         ;
     }
 
-    /**
-     * Executes the command.
-     *
-     * @return int|null
-     */
-    protected function executeLocked(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Contao Tab Control Bundle migration');
@@ -276,7 +276,7 @@ class MigrationCommand extends AbstractLockedCommand
             $io->note('Dry run enabled, no data will be changed.');
             $io->newLine();
         }
-        $this->getContainer()->get('contao.framework')->initialize();
+        $this->contaoFramework->initialize();
         $this->io = $io;
 
         if ($input->hasOption('migration') && !empty($input->getOption('migration'))) {
@@ -337,9 +337,7 @@ class MigrationCommand extends AbstractLockedCommand
     protected function collect(array $types): ?Collection
     {
         $options['column'] = [
-            'tl_content.type IN ('.implode(',', array_map(function ($type) {
-                return '"'.addslashes($type).'"';
-            }, $types)).')',
+            'tl_content.type IN ('.implode(',', array_map(fn($type) => '"'.addslashes($type).'"', $types)).')',
         ];
 
         return ContentModel::findAll($options);

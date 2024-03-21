@@ -14,22 +14,20 @@ use Contao\StringUtil;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparatorElementController;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
+use HeimrichHannot\UtilsBundle\Util\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class StructureTabHelper
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-    private $tabsStartStopCache = [];
+    private array $tabsStartStopCache = [];
+    private Utils $utils;
 
     /**
      * StructureTabHelper constructor.
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Utils $utils)
     {
-        $this->container = $container;
+        $this->utils = $utils;
     }
 
     public function getTabDataForContentElement(int $id, int $pid, string $ptable)
@@ -77,7 +75,7 @@ class StructureTabHelper
      * @param string $prefix The prefix for the flags
      * @param array  $config Options: startElement, separatorElement, stopElement
      */
-    public function structureTabs(array &$data, string $prefix = '', array $config = [])
+    public function structureTabs(array &$data, string $prefix = '', array $config = []): void
     {
         if (!isset($data['id']) || !isset($data['pid'])) {
             return;
@@ -106,7 +104,7 @@ class StructureTabHelper
         $cacheKey = $data['ptable'].'_'.$data['pid'];
 
         if (!isset($this->tabsStartStopCache[$cacheKey])) {
-            if (null !== ($elements = $this->container->get('huh.utils.model')->findModelInstancesBy(
+            if (null !== ($elements = $this->utils->model()->findModelInstancesBy(
                     'tl_content',
                     [
                         'tl_content.ptable=?',
@@ -165,7 +163,12 @@ class StructureTabHelper
 
     /**
      * @param $elements
-     * @param int $iteration
+     * @param string $cacheKey
+     * @param string $startElement
+     * @param string $separatorElement
+     * @param string $stopElement
+     * @param array $processedElements
+     * @return array
      */
     private function buildCache(&$elements, string $cacheKey, string $startElement, string $separatorElement, string $stopElement, array $processedElements = []): array
     {

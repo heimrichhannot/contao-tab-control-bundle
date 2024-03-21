@@ -15,7 +15,7 @@ use Contao\CoreBundle\ServiceAnnotation\ContentElement;
 use Contao\StringUtil;
 use Contao\Template;
 use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
-use HeimrichHannot\UtilsBundle\Container\ContainerUtil;
+use HeimrichHannot\UtilsBundle\Util\Utils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,27 +24,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TabControlSeparatorElementController extends AbstractContentElementController
 {
-    const TYPE = 'tabcontrolSeparator';
+    public const TYPE = 'tabcontrolSeparator';
 
-    /**
-     * @var ContainerUtil
-     */
-    protected $containerUtil;
+    protected StructureTabHelper $structureTabHelper;
+    private Utils $utils;
 
-    /**
-     * @var StructureTabHelper
-     */
-    protected $structureTabHelper;
-
-    public function __construct(ContainerUtil $containerUtil, StructureTabHelper $structureTabHelper)
+    public function __construct(StructureTabHelper $structureTabHelper, Utils $utils)
     {
-        $this->containerUtil = $containerUtil;
         $this->structureTabHelper = $structureTabHelper;
+        $this->utils = $utils;
     }
 
     protected function getResponse(Template $template, ContentModel $element, Request $request): ?Response
     {
-        if ($this->containerUtil->isBackend()) {
+        if ($this->utils->container()->isBackend()) {
             $template = new BackendTemplate('be_tabs_control');
         }
 

@@ -17,10 +17,7 @@ use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
 
 class ContentContainer
 {
-    /**
-     * @var StructureTabHelper
-     */
-    protected $structureTabHelper;
+    protected StructureTabHelper $structureTabHelper;
 
     public function __construct(StructureTabHelper $structureTabHelper)
     {
@@ -30,7 +27,7 @@ class ContentContainer
     /**
      * @Callback(table="tl_content", target="config.onsubmit")
      */
-    public function createTabControlElement(DataContainer $dc)
+    public function createTabControlElement(DataContainer $dc): void
     {
         if (TabControlStartElementController::TYPE !== $dc->activeRecord->type) {
             return;
@@ -60,7 +57,7 @@ class ContentContainer
     /**
      * @Callback(table="tl_content", target="config.ondelete")
      */
-    public function deleteTabControlElement(DataContainer $dc)
+    public function deleteTabControlElement(DataContainer $dc): void
     {
         if (TabControlStartElementController::TYPE !== $dc->activeRecord->type && TabControlStopElementController::TYPE !== $dc->activeRecord->type) {
             return;
