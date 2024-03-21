@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2024-03-21
+- Added: encore contracts support ([#5](https://github.com/heimrichhannot/contao-tab-control-bundle/pull/5))
+- Added: database field migration for changes in version 0.6 ([#5](https://github.com/heimrichhannot/contao-tab-control-bundle/pull/5))
+- Changed: update bundle structure ([#5](https://github.com/heimrichhannot/contao-tab-control-bundle/pull/5))
+- Changed: require at least php 7.4 ([#5](https://github.com/heimrichhannot/contao-tab-control-bundle/pull/5))
+- Fixed: deprecations ([#5](https://github.com/heimrichhannot/contao-tab-control-bundle/pull/5))
+
 ## [1.1.0] - 2021-06-07
 
 - reduced the php constraint to 7.2.x
