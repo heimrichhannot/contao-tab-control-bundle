@@ -23,7 +23,7 @@ class EncoreExtension implements EncoreExtensionInterface
     public function getEntries(): array
     {
         return [
-            EncoreEntry::create('contao-tab-control-bundle', 'src/Resources/assets/js/contao-tab-control-bundle.js')
+            EncoreEntry::create('contao-tab-control-bundle', '/assets/js/contao-tab-control-bundle.js')
                 ->addJsEntryToRemoveFromGlobals('huh_contao-tab-control-bundle_bootstrap-tabs')
                 ->addJsEntryToRemoveFromGlobals('huh_contao-tab-control-bundle'),
         ];
