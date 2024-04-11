@@ -24,7 +24,8 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "contao/core-bundle": "^4.9",
-        "heimrichhannot/contao-utils-bundle": "^2.192"
+        "heimrichhannot/contao-encore-contracts": "^1.0",
+        "heimrichhannot/contao-utils-bundle": "^2.192 || ^3.3"
     },
     "suggest": {
         "heimrichhannot/contao-encore-bundle": "Advanced integration of symfony webpack encore in contao."

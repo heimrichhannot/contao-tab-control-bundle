@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2024-04-11
+- Fixed: dependencies
+
 ## [1.2.0] - 2024-03-21
 - Added: encore contracts support ([#5](https://github.com/heimrichhannot/contao-tab-control-bundle/pull/5))
 - Added: database field migration for changes in version 0.6 ([#5](https://github.com/heimrichhannot/contao-tab-control-bundle/pull/5))
