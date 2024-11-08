@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2024-11-08
+- Added: contao 5 support
+- Changed: v0.4 migration is now an automatic migration
+- Changed: code modernization
+- Changed: dropped contao 4.9 support
+- Changed: requires at least php 8.1
+
 ## [1.2.1] - 2024-04-11
 - Fixed: dependencies
 
