@@ -17,11 +17,8 @@ use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
 
 class ContentContainer
 {
-    protected StructureTabHelper $structureTabHelper;
-
-    public function __construct(StructureTabHelper $structureTabHelper)
+    public function __construct(protected StructureTabHelper $structureTabHelper)
     {
-        $this->structureTabHelper = $structureTabHelper;
     }
 
     /**

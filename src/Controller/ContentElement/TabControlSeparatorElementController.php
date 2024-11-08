@@ -25,13 +25,10 @@ use Symfony\Component\HttpFoundation\Response;
 class TabControlSeparatorElementController extends AbstractContentElementController
 {
     public const TYPE = 'tabcontrolSeparator';
+    private readonly Utils $utils;
 
-    protected StructureTabHelper $structureTabHelper;
-    private Utils $utils;
-
-    public function __construct(StructureTabHelper $structureTabHelper, Utils $utils)
+    public function __construct(protected StructureTabHelper $structureTabHelper, Utils $utils)
     {
-        $this->structureTabHelper = $structureTabHelper;
         $this->utils = $utils;
     }
 

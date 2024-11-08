@@ -20,8 +20,8 @@ return RectorConfig::configure()
         AddVoidReturnTypeWhereNoReturnRector::class,
     ])
     ->withSets([
-        SetList::PHP_74,
-        LevelSetList::UP_TO_PHP_74,
+        SetList::PHP_81,
+        LevelSetList::UP_TO_PHP_80,
         SymfonySetList::SYMFONY_44,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
         ContaoSetList::CONTAO_49,

@@ -26,15 +26,10 @@ use Symfony\Component\HttpFoundation\Response;
 class TabControlStartElementController extends AbstractContentElementController
 {
     public const TYPE = 'tabcontrolStart';
+    private readonly Utils $utils;
 
-    protected StructureTabHelper $structureTabHelper;
-    protected FrontendAsset $frontendAsset;
-    private Utils $utils;
-
-    public function __construct(StructureTabHelper $structureTabHelper, FrontendAsset $frontendAsset, Utils $utils)
+    public function __construct(protected StructureTabHelper $structureTabHelper, protected FrontendAsset $frontendAsset, Utils $utils)
     {
-        $this->structureTabHelper = $structureTabHelper;
-        $this->frontendAsset = $frontendAsset;
         $this->utils = $utils;
     }
 
