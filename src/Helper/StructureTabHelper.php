@@ -15,7 +15,6 @@ use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparato
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
 use HeimrichHannot\UtilsBundle\Util\Utils;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class StructureTabHelper
 {

@@ -8,10 +8,10 @@
 
 namespace HeimrichHannot\TabControlBundle\Controller\ContentElement;
 
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\BackendTemplate;
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
-use Contao\CoreBundle\ServiceAnnotation\ContentElement;
 use Contao\StringUtil;
 use Contao\Template;
 use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
@@ -19,9 +19,7 @@ use HeimrichHannot\UtilsBundle\Util\Utils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @ContentElement(TabControlSeparatorElementController::TYPE,category="tabs",template="ce_tabcontrol_separator")
- */
+#[AsContentElement(TabControlSeparatorElementController::TYPE, category: 'tabs', template: 'ce_tabcontrol_separator')]
 class TabControlSeparatorElementController extends AbstractContentElementController
 {
     public const TYPE = 'tabcontrolSeparator';
