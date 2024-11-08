@@ -9,7 +9,7 @@
 namespace HeimrichHannot\TabControlBundle\Helper;
 
 use Contao\ContentModel;
-use Contao\Controller;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\StringUtil;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparatorElementController;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
@@ -20,14 +20,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class StructureTabHelper
 {
     private array $tabsStartStopCache = [];
-    private readonly Utils $utils;
 
     /**
      * StructureTabHelper constructor.
      */
-    public function __construct(Utils $utils)
+    public function __construct(
+        private readonly Utils $utils,
+        private readonly InsertTagParser $insertTagParser,
+    )
     {
-        $this->utils = $utils;
     }
 
     public function getTabDataForContentElement(int $id, int $pid, string $ptable)
@@ -46,7 +47,7 @@ class StructureTabHelper
                     $tab['active'] = (int) $element['id'] === $id;
                     $tab['id'] = $element['id'];
                     $tab['addTabLink'] = $element['tabControlAddLink'];
-                    $tab['tabLink'] = ((!str_contains((string) $element['tabControlLink'], 'http')) ? '/' : '').Controller::replaceInsertTags($element['tabControlLink']);
+                    $tab['tabLink'] = ((!str_contains((string) $element['tabControlLink'], 'http')) ? '/' : '').$this->insertTagParser->replace($element['tabControlLink']);
                     $tab['openLinkInNewTab'] = $element['tabControlTarget'];
 
                     $tabs[] = $tab;
