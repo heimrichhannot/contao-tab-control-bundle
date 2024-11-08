@@ -9,25 +9,25 @@
 namespace HeimrichHannot\TabControlBundle\Helper;
 
 use Contao\ContentModel;
-use Contao\Controller;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\StringUtil;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlSeparatorElementController;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
 use HeimrichHannot\UtilsBundle\Util\Utils;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class StructureTabHelper
 {
     private array $tabsStartStopCache = [];
-    private Utils $utils;
 
     /**
      * StructureTabHelper constructor.
      */
-    public function __construct(Utils $utils)
+    public function __construct(
+        private readonly Utils $utils,
+        private readonly InsertTagParser $insertTagParser,
+    )
     {
-        $this->utils = $utils;
     }
 
     public function getTabDataForContentElement(int $id, int $pid, string $ptable)
@@ -46,7 +46,7 @@ class StructureTabHelper
                     $tab['active'] = (int) $element['id'] === $id;
                     $tab['id'] = $element['id'];
                     $tab['addTabLink'] = $element['tabControlAddLink'];
-                    $tab['tabLink'] = ((false === strpos($element['tabControlLink'], 'http')) ? '/' : '').Controller::replaceInsertTags($element['tabControlLink']);
+                    $tab['tabLink'] = ((!str_contains((string) $element['tabControlLink'], 'http')) ? '/' : '').$this->insertTagParser->replace($element['tabControlLink']);
                     $tab['openLinkInNewTab'] = $element['tabControlTarget'];
 
                     $tabs[] = $tab;
@@ -163,11 +163,6 @@ class StructureTabHelper
 
     /**
      * @param $elements
-     * @param string $cacheKey
-     * @param string $startElement
-     * @param string $separatorElement
-     * @param string $stopElement
-     * @param array $processedElements
      * @return array
      */
     private function buildCache(&$elements, string $cacheKey, string $startElement, string $separatorElement, string $stopElement, array $processedElements = []): array

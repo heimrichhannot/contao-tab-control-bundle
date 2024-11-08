@@ -28,24 +28,20 @@ class MigrationCommand extends Command
 {
     protected const MIGRATION_FRY = 'fry_accessible_tabs';
     protected const MIGRATION_BOOTSTRAPPER = 'bootstrapper-tabs';
-    protected const MIGRATION_0_4 = '<0.4';
     protected const MIGRATIONS = [
         self::MIGRATION_FRY,
         self::MIGRATION_BOOTSTRAPPER,
-        self::MIGRATION_0_4,
     ];
 
     protected bool $dryRun = false;
     protected SymfonyStyle $io;
 
     private array $migrationSql = [];
-    private StructureTabHelper $structureTabHelper;
-    private ContaoFramework $contaoFramework;
+    private readonly ContaoFramework $contaoFramework;
 
-    public function __construct(StructureTabHelper $structureTabHelper, ContaoFramework $contaoFramework)
+    public function __construct(private readonly StructureTabHelper $structureTabHelper, ContaoFramework $contaoFramework)
     {
         parent::__construct();
-        $this->structureTabHelper = $structureTabHelper;
         $this->contaoFramework = $contaoFramework;
     }
 
@@ -218,39 +214,6 @@ class MigrationCommand extends Command
         return 0;
     }
 
-    /**
-     * Fixes content element typo in version until 0.3.
-     *
-     * @return int
-     */
-    public function migrateFromLower0_4(SymfonyStyle $io)
-    {
-        $contentElementTypes = [
-            'tabcontrolSeparator',
-        ];
-        $contentElements = $this->collect($contentElementTypes);
-
-        if (!$contentElements) {
-            $io->text('Found no content element from versions < 0.4 of tab control bundle.');
-
-            return 0;
-        }
-
-        $io->text('Found <fg=yellow>'.$contentElements->count().'</> elements.');
-
-        $io->progressStart($contentElements->count());
-
-        /** @var ContentModel $contentElement */
-        foreach ($contentElements as $contentElement) {
-            $contentElement->type = TabControlSeparatorElementController::TYPE;
-            $this->saveModel($contentElement);
-            $io->progressAdvance();
-        }
-        $io->progressFinish();
-
-        return 0;
-    }
-
     public function hasMigrationSql(): bool
     {
         return !empty($this->migrationSql);
@@ -301,11 +264,6 @@ class MigrationCommand extends Command
 
                 break;
 
-            case static::MIGRATION_0_4:
-                $result = $this->migrateFromLower0_4($io);
-
-                break;
-
             case 'cancel':
                 $this->finishedWithoutChanges($io);
 
@@ -337,7 +295,7 @@ class MigrationCommand extends Command
     protected function collect(array $types): ?Collection
     {
         $options['column'] = [
-            'tl_content.type IN ('.implode(',', array_map(fn($type) => '"'.addslashes($type).'"', $types)).')',
+            'tl_content.type IN ('.implode(',', array_map(fn($type) => '"'.addslashes((string) $type).'"', $types)).')',
         ];
 
         return ContentModel::findAll($options);
@@ -368,7 +326,7 @@ class MigrationCommand extends Command
         }
     }
 
-    protected function deleteModel(ContentModel $contentModel)
+    protected function deleteModel(ContentModel $contentModel): void
     {
         $this->addMigrationSql('DELETE FROM tl_content WHERE id='.$contentModel->id.';');
 
@@ -377,7 +335,7 @@ class MigrationCommand extends Command
         }
     }
 
-    protected function finishedWithoutChanges(SymfonyStyle $io)
+    protected function finishedWithoutChanges(SymfonyStyle $io): void
     {
         $io->success('Finished command without doing anything.');
     }

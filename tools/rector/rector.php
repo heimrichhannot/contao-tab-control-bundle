@@ -14,17 +14,18 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/../../src',
     ])
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
     ])
+    ->withImportNames(importShortClasses: false, removeUnusedImports: true)
     ->withSets([
-        SetList::PHP_74,
-        LevelSetList::UP_TO_PHP_74,
-        SymfonySetList::SYMFONY_44,
+        SetList::PHP_81,
+        LevelSetList::UP_TO_PHP_81,
+        SymfonySetList::SYMFONY_54,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
-        ContaoSetList::CONTAO_49,
+
+        ContaoSetList::CONTAO_413,
         ContaoSetList::FQCN,
-        ContaoLevelSetList::UP_TO_CONTAO_49,
+        ContaoLevelSetList::UP_TO_CONTAO_413,
+        ContaoSetList::ANNOTATIONS_TO_ATTRIBUTES,
     ]);

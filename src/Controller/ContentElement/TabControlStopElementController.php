@@ -8,10 +8,10 @@
 
 namespace HeimrichHannot\TabControlBundle\Controller\ContentElement;
 
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\BackendTemplate;
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
-use Contao\CoreBundle\ServiceAnnotation\ContentElement;
 use Contao\Template;
 use HeimrichHannot\TabControlBundle\Asset\FrontendAsset;
 use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
@@ -19,21 +19,14 @@ use HeimrichHannot\UtilsBundle\Util\Utils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @ContentElement(TabControlStopElementController::TYPE,category="tabs",template="ce_tabcontrol_stop")
- */
+#[AsContentElement(TabControlStopElementController::TYPE, category: 'tabs', template: 'ce_tabcontrol_stop')]
 class TabControlStopElementController extends AbstractContentElementController
 {
     public const TYPE = 'tabcontrolStop';
+    private readonly Utils $utils;
 
-    protected StructureTabHelper $structureTabHelper;
-    protected FrontendAsset $frontendAsset;
-    private Utils $utils;
-
-    public function __construct(StructureTabHelper $structureTabHelper, FrontendAsset $frontendAsset, Utils $utils)
+    public function __construct(protected StructureTabHelper $structureTabHelper, protected FrontendAsset $frontendAsset, Utils $utils)
     {
-        $this->structureTabHelper = $structureTabHelper;
-        $this->frontendAsset = $frontendAsset;
         $this->utils = $utils;
     }
 

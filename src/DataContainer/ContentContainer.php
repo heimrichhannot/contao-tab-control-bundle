@@ -8,8 +8,8 @@
 
 namespace HeimrichHannot\TabControlBundle\DataContainer;
 
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\ContentModel;
-use Contao\CoreBundle\ServiceAnnotation\Callback;
 use Contao\DataContainer;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStartElementController;
 use HeimrichHannot\TabControlBundle\Controller\ContentElement\TabControlStopElementController;
@@ -17,16 +17,11 @@ use HeimrichHannot\TabControlBundle\Helper\StructureTabHelper;
 
 class ContentContainer
 {
-    protected StructureTabHelper $structureTabHelper;
-
-    public function __construct(StructureTabHelper $structureTabHelper)
+    public function __construct(protected StructureTabHelper $structureTabHelper)
     {
-        $this->structureTabHelper = $structureTabHelper;
     }
 
-    /**
-     * @Callback(table="tl_content", target="config.onsubmit")
-     */
+    #[AsCallback(table: 'tl_content', target: 'config.onsubmit')]
     public function createTabControlElement(DataContainer $dc): void
     {
         if (TabControlStartElementController::TYPE !== $dc->activeRecord->type) {
@@ -54,9 +49,7 @@ class ContentContainer
         $endElement->save();
     }
 
-    /**
-     * @Callback(table="tl_content", target="config.ondelete")
-     */
+    #[AsCallback(table: 'tl_content', target: 'config.ondelete')]
     public function deleteTabControlElement(DataContainer $dc): void
     {
         if (TabControlStartElementController::TYPE !== $dc->activeRecord->type && TabControlStopElementController::TYPE !== $dc->activeRecord->type) {
