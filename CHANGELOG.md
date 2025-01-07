@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2025-01-07
+- Fixed: Bundle::getPath() signature compatibility
+
 ## [1.3.0] - 2024-11-08
 - Added: contao 5 support
 - Changed: v0.4 migration is now an automatic migration
