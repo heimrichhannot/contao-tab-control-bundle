@@ -12,9 +12,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class HeimrichHannotTabControlBundle extends Bundle
 {
-    public function getPath()
+    public function getPath(): string
     {
         return \dirname(__DIR__);
     }
-
 }
