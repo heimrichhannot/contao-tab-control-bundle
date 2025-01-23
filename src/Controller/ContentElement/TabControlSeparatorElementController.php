@@ -30,7 +30,7 @@ class TabControlSeparatorElementController extends AbstractContentElementControl
         $this->utils = $utils;
     }
 
-    protected function getResponse(Template $template, ContentModel $element, Request $request): ?Response
+    protected function getResponse(Template $template, ContentModel $element, Request $request): Response
     {
         if ($this->utils->container()->isBackend()) {
             $template = new BackendTemplate('be_tabs_control');
