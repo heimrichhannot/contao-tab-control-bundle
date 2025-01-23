@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2025-01-23
+- Fixed: <*>ElementController::getResponse() signature compatibility
+
 ## [1.3.1] - 2025-01-07
 - Fixed: Bundle::getPath() signature compatibility
 
