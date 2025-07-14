@@ -2,8 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.3.3] - 2025-07-14
+## [1.3.4] - 2025-07-14
 - Fixed: non-encore asset paths
+
+## [1.3.3] - 2025-06-18
+-Fixed: issue with encore integration
 
 ## [1.3.2] - 2025-01-23
 - Fixed: <*>ElementController::getResponse() signature compatibility
