@@ -29,10 +29,10 @@ class FrontendAsset implements ServiceSubscriberInterface
 
         $this->addPageEntrypoint('contao-tab-control-bundle', [
             'TL_JAVASCRIPT' => [
-                'huh_contao-tab-control-bundle' => 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle.js',
+                'huh_contao-tab-control-bundle' => 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle-backend.js',
             ],
             'TL_CSS' => [
-                'huh_contao-tab-control-bundle' => 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle.css',
+                'huh_contao-tab-control-bundle' => 'bundles/heimrichhannottabcontrol/contao-tab-control-bundle-backend.css',
             ],
         ]);
     }
