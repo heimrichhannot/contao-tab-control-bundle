@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.3.5] - 2025-10-22
 - Fixed: migration command return type compatibility with Symfony Console 7.
 
 ## [1.3.4] - 2025-07-14
