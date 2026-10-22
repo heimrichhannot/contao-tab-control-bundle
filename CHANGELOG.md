@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+- Fixed: migration command return type compatibility with Symfony Console 7.
+
 ## [1.3.4] - 2025-07-14
 - Fixed: non-encore asset paths
 
