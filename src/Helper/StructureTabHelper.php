@@ -45,9 +45,13 @@ class StructureTabHelper
                     $tab['tabId'] = StringUtil::generateAlias($element['tabControlHeadline']).'_'.$element['id'];
                     $tab['active'] = (int) $element['id'] === $id;
                     $tab['id'] = $element['id'];
-                    $tab['addTabLink'] = $element['tabControlAddLink'];
-                    $tab['tabLink'] = ((!str_contains((string) $element['tabControlLink'], 'http')) ? '/' : '').$this->insertTagParser->replace($element['tabControlLink']);
-                    $tab['openLinkInNewTab'] = $element['tabControlTarget'];
+                    $tab['addTabLink'] = false;
+
+                    if ($element['tabControlAddLink'] ?? false) {
+                        $tab['addTabLink'] = $element['tabControlAddLink'];
+                        $tab['openLinkInNewTab'] = $element['tabControlTarget'];
+                        $tab['tabLink'] = $this->insertTagParser->replace($element['tabControlLink']);
+                    }
 
                     $tabs[] = $tab;
                 }

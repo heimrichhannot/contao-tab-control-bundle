@@ -2,7 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.3.5] - 2025-10-22
+## [1.3.6] - 2026-10-28
+- Fixed: invalid url generation for tab links
+
+## [1.3.5] - 2026-10-22
 - Fixed: migration command return type compatibility with Symfony Console 7.
 
 ## [1.3.4] - 2025-07-14
